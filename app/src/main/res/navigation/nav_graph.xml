@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newDishFragment">
+
+    <fragment
+        android:id="@+id/newDishFragment"
+        android:name="com.example.foodie_app.NewDishFragment"
+        android:label="fragment_new_dish"
+        tools:layout="@layout/fragment_new_dish" />
+</navigation>
