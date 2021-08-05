@@ -3,11 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/newDishFragment">
+    app:startDestination="@id/listFeedFragment">
 
     <fragment
         android:id="@+id/newDishFragment"
         android:name="com.example.foodie_app.NewDishFragment"
         android:label="fragment_new_dish"
-        tools:layout="@layout/fragment_new_dish" />
+        tools:layout="@layout/fragment_new_dish" >
+        <action
+            android:id="@+id/action_newDishFragment_to_listFeedFragment"
+            app:destination="@id/listFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFeedFragment"
+        android:name="com.example.foodie_app.ListFeedFragment"
+        android:label="fragment_list_feed"
+        tools:layout="@layout/fragment_list_feed" >
+        <action
+            android:id="@+id/action_listFeedFragment_to_newDishFragment"
+            app:destination="@id/newDishFragment" />
+    </fragment>
 </navigation>
