@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFeedFragment">
+
+    <fragment
+        android:id="@+id/newDishFragment"
+        android:name="com.example.foodie_app.NewDishFragment"
+        android:label="fragment_new_dish"
+        tools:layout="@layout/fragment_new_dish" >
+        <action
+            android:id="@+id/action_newDishFragment_to_listFeedFragment"
+            app:destination="@id/listFeedFragment" />
+        <action
+            android:id="@+id/action_newDishFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFeedFragment"
+        android:name="com.example.foodie_app.ListFeedFragment"
+        android:label="fragment_list_feed"
+        tools:layout="@layout/fragment_list_feed" >
+        <action
+            android:id="@+id/action_listFeedFragment_to_newDishFragment"
+            app:destination="@id/newDishFragment" />
+        <action
+            android:id="@+id/action_listFeedFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.foodie_app.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_newDishFragment"
+            app:destination="@id/newDishFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_listFeedFragment"
+            app:destination="@id/listFeedFragment" />
+    </fragment>
+</navigation>
