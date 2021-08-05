@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        app:labelVisibilityMode="unlabeled"/>
 
     <!--    you can set a specific fragment w/the name attribute.
     Setting it to navHostFragment allows us to switch betw fragments-->
