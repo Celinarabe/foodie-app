@@ -1,10 +1,11 @@
 package com.example.foodie_app
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.android.material.datepicker.MaterialDatePicker
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +22,11 @@ class NewDishFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val datePicker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Select date")
+        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        .build()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,6 +41,13 @@ class NewDishFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_new_dish, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+            //access date button
+
+
     }
 
     companion object {
