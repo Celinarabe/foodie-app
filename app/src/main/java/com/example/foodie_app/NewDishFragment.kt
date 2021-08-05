@@ -1,14 +1,14 @@
 package com.example.foodie_app
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.foodie_app.databinding.FragmentNewDishBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,12 +22,13 @@ class NewDishFragment : Fragment() {
     //non null assertion when you know its not null
     private val binding get() = _binding!!
 
-    private val datePicker = MaterialDatePicker.Builder.datePicker()
-        .setTitleText("Select date")
-        .build()
+    private val today = MaterialDatePicker.todayInUtcMilliseconds()
+    private lateinit var datePicker:MaterialDatePicker<Long>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("NewDishFragment", "$today")
     }
 
     override fun onCreateView(
@@ -36,32 +37,37 @@ class NewDishFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentNewDishBinding.inflate(inflater, container, false)
+        buildDatePicker()
         return binding.root
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            //access date button
+        //access date button
         val dateBtn = binding.btnDate
+        dateBtn.text = getDateTime(today.toString())
         dateBtn.setOnClickListener {
-            Log.d("NewDishFragment", "in onclick")
             datePicker.show(this.parentFragmentManager, datePicker.toString())
-            datePicker.addOnPositiveButtonClickListener {
-                // Respond to positive button click.
-                Log.d("NewDishFragment", "in  positive onclick")
-
-                val dateSelection = datePicker.selection
-                val dateString = getDateTime(dateSelection.toString())
-                binding.btnDate.text = dateString
-
-            }
-
         }
-
-
     }
+
+    private fun buildDatePicker() {
+        val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
+        //constrain calendar to today and backwards
+        val constraintsBuilder = CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
+        datePickerBuilder.setTitleText("Select Date")
+        datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
+        datePicker = datePickerBuilder.build()
+        datePicker.addOnPositiveButtonClickListener {
+            // Respond to positive button click.
+            val dateSelection = datePicker.selection
+            val dateString = getDateTime(dateSelection.toString())
+            binding.btnDate.text = dateString
+        }
+    }
+
+
 
     private fun getDateTime(s: String): String? {
         val sdf = SimpleDateFormat("MM/dd/yyyy")
