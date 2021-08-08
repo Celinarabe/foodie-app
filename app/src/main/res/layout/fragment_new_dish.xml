@@ -6,14 +6,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="60dp"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:fillViewport="true" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-
         tools:context=".NewDishFragment">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_add"
+            tools:layout_editor_absoluteX="110dp"
+            tools:layout_editor_absoluteY="59dp" />
+
+        <Button
+            android:id="@+id/addPicBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Add Photo"
+            app:layout_constraintBottom_toTopOf="@+id/tfDishName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -26,7 +48,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_weight="0">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -92,16 +115,9 @@
             app:layout_constraintStart_toStartOf="@+id/tfNotes"
             app:layout_constraintTop_toBottomOf="@+id/tfNotes" />
 
-        <Button
-            android:id="@+id/addPicBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Photo"
-            app:layout_constraintBottom_toTopOf="@+id/tfDishName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
 </ScrollView>

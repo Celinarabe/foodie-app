@@ -15,6 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodieapp">
 
+        <provider
+            android:authorities="com.example.foodie_app.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -24,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
