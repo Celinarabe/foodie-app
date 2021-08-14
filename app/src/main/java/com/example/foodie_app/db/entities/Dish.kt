@@ -1,4 +1,4 @@
-package com.example.foodie_app.entities
+package com.example.foodie_app.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,8 +13,8 @@ data class Dish (
     var notes: String,
     var photoPath: String
 )
-
 {
+    //every entity needs a primary key
     @PrimaryKey(autoGenerate = true)
     var idx: Int = 0
 }

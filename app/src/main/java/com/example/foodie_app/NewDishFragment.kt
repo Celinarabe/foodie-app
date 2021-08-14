@@ -17,9 +17,10 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.foodie_app.databinding.FragmentNewDishBinding
-import com.example.foodie_app.entities.Dish
-import com.example.foodie_app.entities.DishViewModel
+import com.example.foodie_app.view_models.DishViewModel
+import com.example.foodie_app.view_models.DishViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -39,7 +40,12 @@ class NewDishFragment : Fragment() {
     //non null assertion when you know its not null
     private val binding get() = _binding!!
     //DishViewModel thats shared across all fragments in MainActivity
-    private val sharedViewModel: DishViewModel by activityViewModels()
+    private val sharedViewModel: DishViewModel by activityViewModels() {
+        DishViewModelFactory(
+            (activity?.application as DishApplication).database
+                .dishDAO()
+        )
+    }
 
     /*
      * DATE PICKER
@@ -85,13 +91,17 @@ class NewDishFragment : Fragment() {
 
     //save dish to ViewModel
     private fun saveDish() {
+
         val newName :String = binding.etDishName.text.toString()
         val newDate :String = binding.btnDate.text.toString()
-        val location :String = binding.tfLocation.toString()
-        val notes :String = binding.tfNotes.toString()
+        val location :String = binding.etLocation.text.toString()
+        val notes :String = binding.etNotes.text.toString()
         val photoPath :String = photoPath
-        val newDishObj = Dish(newName, newDate, location, notes, photoPath)
-        sharedViewModel.setCurrentDishObj(newDishObj)
+        if (sharedViewModel.isEntryValid(newName)) {
+            sharedViewModel.addNewDish(newName, newDate, location, notes, photoPath)
+            val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
+            findNavController().navigate(action)
+        }
     }
 
     //create MaterialUI's date picker

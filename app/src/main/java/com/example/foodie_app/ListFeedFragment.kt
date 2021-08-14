@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.foodie_app.databinding.FragmentListFeedBinding
-import com.example.foodie_app.entities.DishViewModel
 
 
 class ListFeedFragment : Fragment() {
     //DishViewModel
-    private val sharedViewModel: DishViewModel by activityViewModels()
+    //private val sharedViewModel: DishViewModel by activityViewModels()
     //reference to the view binding object
     private var _binding: FragmentListFeedBinding? = null
     //non null assertion when you know its not null
@@ -29,6 +27,11 @@ class ListFeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvDishName.text = sharedViewModel._dishObj?.name
+//        val dishDAO = DishDatabase.getInstance(requireContext()).dishDAO()
+//        val dishRepository = DishRepository(dishDAO)
+//        sharedViewModel = DishViewModel(dishRepository)
+
+        //binding.tvDishName.text = sharedViewModel.newDishObj?.name
+
     }
 }
