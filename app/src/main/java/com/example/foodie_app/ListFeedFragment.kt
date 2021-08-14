@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodie_app.databinding.FragmentListFeedBinding
+import com.example.foodie_app.view_models.DishViewModel
+import com.example.foodie_app.view_models.DishViewModelFactory
 
 
 class ListFeedFragment : Fragment() {
@@ -15,6 +19,12 @@ class ListFeedFragment : Fragment() {
     private var _binding: FragmentListFeedBinding? = null
     //non null assertion when you know its not null
     private val binding get() = _binding!!
+
+    private val viewModel: DishViewModel by activityViewModels {
+        DishViewModelFactory(
+            (activity?.application as DishApplication).database.dishDAO()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,11 +37,16 @@ class ListFeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val dishDAO = DishDatabase.getInstance(requireContext()).dishDAO()
-//        val dishRepository = DishRepository(dishDAO)
-//        sharedViewModel = DishViewModel(dishRepository)
+        val adapter = DishListAdapter{
+        }
+        binding.recyclerView.adapter = adapter
+        viewModel.allDishes.observe(this.viewLifecycleOwner){
+            dishes -> dishes.let {
+                adapter.submitList(it)
+        }
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
 
-        //binding.tvDishName.text = sharedViewModel.newDishObj?.name
 
     }
 }

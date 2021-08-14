@@ -1,14 +1,12 @@
 package com.example.foodie_app.view_models
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.db.entities.DishDAO
 import kotlinx.coroutines.launch
 
 class DishViewModel(private val dishDao: DishDAO): ViewModel() {
-
+    val allDishes : LiveData<List<Dish>> = dishDao.getAllDishes().asLiveData()
 
 
     private fun insertDish(newDish:Dish) {
