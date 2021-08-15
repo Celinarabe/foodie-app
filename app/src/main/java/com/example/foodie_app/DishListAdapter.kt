@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodie_app.databinding.FragmentListItemBinding
 import com.example.foodie_app.db.entities.Dish
+import com.example.foodie_app.utilities.BitmapUtility
 
 class DishListAdapter(private val onItemClicked: (Dish) -> Unit) :
     ListAdapter<Dish, DishListAdapter.DishViewHolder>(DiffCallback) {
@@ -15,15 +16,17 @@ class DishListAdapter(private val onItemClicked: (Dish) -> Unit) :
         fun bind(currDish : Dish){
             binding.apply {
                 tvDishName.text = currDish.name
-                tvDishDate.text = currDish.date
                 tvDishLocation.text = currDish.location
-                tvDishNotes.text = currDish.notes
+                currDish.photoArray?.let{
+                    imgDish.setImageBitmap(BitmapUtility.getImage(currDish.photoArray!!))
+                }
+
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
-        val viewObj = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishListAdapter.DishViewHolder {
+        val viewObj = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return DishListAdapter.DishViewHolder(viewObj)
     }
 

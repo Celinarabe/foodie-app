@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.foodie_app.databinding.FragmentNewDishBinding
+import com.example.foodie_app.utilities.BitmapUtility
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
@@ -61,9 +62,11 @@ class NewDishFragment : Fragment() {
     //image capture request code
     val REQUEST_IMAGE_CAPTURE = 1
     //photo file obj uploaded by user
-    private lateinit var photoFile: File
-    //photo path
-    private var photoPath : String = ""
+    private var photoFile: File? = null
+
+    private var photoPath:String = ""
+    //photo byte array to insert into db
+    private var photoArray : ByteArray? = null
 
 
     override fun onCreateView(
@@ -96,9 +99,8 @@ class NewDishFragment : Fragment() {
         val newDate :String = binding.btnDate.text.toString()
         val location :String = binding.etLocation.text.toString()
         val notes :String = binding.etNotes.text.toString()
-        val photoPath :String = photoPath
         if (sharedViewModel.isEntryValid(newName)) {
-            sharedViewModel.addNewDish(newName, newDate, location, notes, photoPath)
+            sharedViewModel.addNewDish(newName, newDate, location, notes, photoArray)
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
         }
@@ -124,9 +126,10 @@ class NewDishFragment : Fragment() {
     //sets imageView to user's photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            photoPath = photoFile.absolutePath
+            photoPath = photoFile?.absolutePath.toString()
             val takenImage = BitmapFactory.decodeFile(photoPath)
             val sizedPhoto = resizePhoto(takenImage)
+            photoArray = BitmapUtility.getBytes(sizedPhoto)
             binding.imageView.setImageBitmap(sizedPhoto)
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -188,7 +191,7 @@ class NewDishFragment : Fragment() {
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = createImageFile()
-        val fileProvider = FileProvider.getUriForFile(this.requireContext(), "com.example.foodie_app.fileprovider", photoFile)
+        val fileProvider = FileProvider.getUriForFile(this.requireContext(), "com.example.foodie_app.fileprovider", photoFile!!)
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider) //passing in a file provider allows for more secure content sharing
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)

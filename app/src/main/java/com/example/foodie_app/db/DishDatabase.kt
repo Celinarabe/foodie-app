@@ -8,7 +8,7 @@ import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.db.entities.DishDAO
 
 
-@Database(entities = [Dish::class], version = 2, exportSchema = false)
+@Database(entities = [Dish::class], version = 3, exportSchema = false)
 public abstract class DishDatabase : RoomDatabase() {
 
     abstract fun dishDAO(): DishDAO
@@ -23,8 +23,10 @@ public abstract class DishDatabase : RoomDatabase() {
                  val instance = Room.databaseBuilder(
                     context.applicationContext,
                     DishDatabase::class.java,
-                    "dish_db"
-                ).build()
+                    "dish_db",
+
+                ).fallbackToDestructiveMigration()
+                     .build()
                 INSTANCE = instance
                 instance //returning instance
             }

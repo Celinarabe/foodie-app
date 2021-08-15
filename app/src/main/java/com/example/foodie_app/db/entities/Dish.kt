@@ -11,10 +11,11 @@ data class Dish (
     var date: String,
     var location: String,
     var notes: String,
-    var photoPath: String
+    var photoArray: ByteArray?
 )
 {
     //every entity needs a primary key
     @PrimaryKey(autoGenerate = true)
     var idx: Int = 0
 }
+
