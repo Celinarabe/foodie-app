@@ -26,7 +26,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.5"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_add"
+            app:srcCompat="@drawable/ic_baseline_fastfood_24"
             tools:layout_editor_absoluteX="110dp"
             tools:layout_editor_absoluteY="59dp" />
 

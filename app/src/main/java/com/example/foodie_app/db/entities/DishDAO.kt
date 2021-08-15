@@ -19,7 +19,7 @@ interface DishDAO {
 
 
     //we use a flow to automatically update based on changes to the db
-    @Query("SELECT * FROM dish ORDER BY date DESC")
+    @Query("SELECT * FROM dish ORDER BY idx DESC")
     fun getAllDishes() : Flow<List<Dish>>
     
 }

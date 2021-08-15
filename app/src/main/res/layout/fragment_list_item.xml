@@ -15,9 +15,10 @@
                 android:id="@+id/imgDish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_launcher_foreground"
+                app:srcCompat="@drawable/ic_baseline_fastfood_24"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/content_description_media"
+                android:layout_gravity="center_horizontal"
                 />
 
             <LinearLayout

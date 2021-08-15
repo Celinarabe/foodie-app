@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Dish (
     var name: String,
-    var date: String,
+    var date: Long,
     var location: String,
     var notes: String,
     var photoArray: ByteArray?

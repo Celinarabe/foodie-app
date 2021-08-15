@@ -15,7 +15,7 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         }
     }
 
-    private fun getNewDishObj(newName:String, newDate:String, newLocation: String, newNotes: String, newPhoto: ByteArray?) : Dish{
+    private fun getNewDishObj(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: ByteArray?) : Dish{
         return Dish(
             name = newName,
             date = newDate,
@@ -25,7 +25,7 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         )
     }
 
-    fun addNewDish(newName:String, newDate:String, newLocation: String, newNotes: String, newPhoto: ByteArray?){
+    fun addNewDish(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: ByteArray?){
         val newDish = getNewDishObj(newName, newDate, newLocation, newNotes, newPhoto)
         insertDish(newDish)
     }

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.foodie_app.databinding.FragmentNewDishBinding
 import com.example.foodie_app.utilities.BitmapUtility
+import com.example.foodie_app.utilities.TimeUtility
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
@@ -27,6 +29,7 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -38,8 +41,10 @@ class NewDishFragment : Fragment() {
      */
     //reference to view binding object
     private var _binding: FragmentNewDishBinding? = null
+
     //non null assertion when you know its not null
     private val binding get() = _binding!!
+
     //DishViewModel thats shared across all fragments in MainActivity
     private val sharedViewModel: DishViewModel by activityViewModels() {
         DishViewModelFactory(
@@ -52,21 +57,25 @@ class NewDishFragment : Fragment() {
      * DATE PICKER
      */
     //today's date to populate default date in date picker
-    private val today = MaterialDatePicker.todayInUtcMilliseconds()
+    private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
+
     //datePicker object
-    private lateinit var datePicker:MaterialDatePicker<Long>
+    private lateinit var datePicker: MaterialDatePicker<Long>
+
 
     /*
      * IMAGE HANDLING
      */
     //image capture request code
     val REQUEST_IMAGE_CAPTURE = 1
+
     //photo file obj uploaded by user
     private var photoFile: File? = null
 
-    private var photoPath:String = ""
+    private var photoPath: String = ""
+
     //photo byte array to insert into db
-    private var photoArray : ByteArray? = null
+    private var photoArray: ByteArray? = null
 
 
     override fun onCreateView(
@@ -77,11 +86,11 @@ class NewDishFragment : Fragment() {
         buildDatePicker()
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.apply{
-            btnDate.text = getDateTime(today)
+        binding?.apply {
+            btnDate.text = TimeUtility.getDateTime(selectedDate)
             btnDate.setOnClickListener {
                 datePicker.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
             }
@@ -92,13 +101,14 @@ class NewDishFragment : Fragment() {
         }
     }
 
+
     //save dish to ViewModel
     private fun saveDish() {
 
-        val newName :String = binding.etDishName.text.toString()
-        val newDate :String = binding.btnDate.text.toString()
-        val location :String = binding.etLocation.text.toString()
-        val notes :String = binding.etNotes.text.toString()
+        val newName: String = binding.etDishName.text.toString()
+        val newDate: Long = selectedDate
+        val location: String = binding.etLocation.text.toString()
+        val notes: String = binding.etNotes.text.toString()
         if (sharedViewModel.isEntryValid(newName)) {
             sharedViewModel.addNewDish(newName, newDate, location, notes, photoArray)
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
@@ -110,14 +120,15 @@ class NewDishFragment : Fragment() {
     private fun buildDatePicker() {
         val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
         //constrain calendar to today and backwards
-        val constraintsBuilder = CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
+        val constraintsBuilder =
+            CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
         datePickerBuilder.setTitleText("Select Date")
         datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
         datePicker = datePickerBuilder.build()
         datePicker.addOnPositiveButtonClickListener {
             // Respond to positive button click.
             val dateSelection = datePicker.selection
-            val dateString = getDateTime(dateSelection!!)
+            val dateString = TimeUtility.getDateTime(dateSelection!!)
             binding.btnDate.text = dateString
         }
     }
@@ -125,15 +136,29 @@ class NewDishFragment : Fragment() {
 
     //sets imageView to user's photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            photoPath = photoFile?.absolutePath.toString()
-            val takenImage = BitmapFactory.decodeFile(photoPath)
-            val sizedPhoto = resizePhoto(takenImage)
-            photoArray = BitmapUtility.getBytes(sizedPhoto)
-            binding.imageView.setImageBitmap(sizedPhoto)
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
+        lateinit var takenImage: Bitmap
+        lateinit var finalPhoto: Bitmap
+        try {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                photoPath = photoFile?.absolutePath.toString()
+                takenImage = BitmapFactory.decodeFile(photoPath)
+                finalPhoto = rotatePhoto(resizePhoto(takenImage))
+
+            } else {
+                super.onActivityResult(requestCode, resultCode, data)
+                val imageUri = data?.data;
+                takenImage =
+                    MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
+                finalPhoto = resizePhoto(takenImage)
+            }
+
+            photoArray = BitmapUtility.getBytes(finalPhoto)
+            binding.imageView.setImageBitmap(finalPhoto)
+        } catch (e: IOException) {
+            Log.i("TAG", "Some exception $e")
         }
+
+
     }
 
     //alerts user to upload or take photo
@@ -151,35 +176,37 @@ class NewDishFragment : Fragment() {
             .show()
     }
 
+    fun rotatePhoto(oldPhoto: Bitmap) : Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(90.0F)
+        val rotatedBitmap = Bitmap.createBitmap(
+            oldPhoto,
+            0,
+            0,
+            oldPhoto.width,
+            oldPhoto.height,
+            matrix,
+            true
+        )
+        return rotatedBitmap
+    }
+
 
     //resizes and rotates photo
-    fun resizePhoto(oldPhoto:Bitmap):Bitmap {
+    fun resizePhoto(oldPhoto: Bitmap): Bitmap {
         val displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         val aspectRatio = oldPhoto.width / oldPhoto.height
         val newWidth = displayMetrics.widthPixels
-        val matrix = Matrix()
-        matrix.postRotate(90.0F)
         val newHeight = (newWidth.toDouble() / aspectRatio).roundToInt()
-        val scaledBitmap = Bitmap.createScaledBitmap(oldPhoto, newWidth, newHeight, false)
-        val rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
-        return rotatedBitmap
-    }
-
-    //converts epoch time to string format
-    private fun getDateTime(s: Long): String? {
-        val timeZone = TimeZone.getDefault()
-        val offset = timeZone.getOffset(s)
-        val sdf = SimpleDateFormat("MM/dd/yyyy")
-        val netDate = Date(s - offset)
-        return sdf.format(netDate)
+        return Bitmap.createScaledBitmap(oldPhoto, newWidth, newHeight, false)
     }
 
     //creates file w/ unique name
-    private fun createImageFile() : File {
-        val timeStamp:String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File? = this.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val uniquePrefix:String = "JPEG_${timeStamp}_"
+        val uniquePrefix: String = "JPEG_${timeStamp}_"
         return File.createTempFile(uniquePrefix, ".jpg", storageDir)
     }
 
@@ -191,8 +218,15 @@ class NewDishFragment : Fragment() {
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         photoFile = createImageFile()
-        val fileProvider = FileProvider.getUriForFile(this.requireContext(), "com.example.foodie_app.fileprovider", photoFile!!)
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider) //passing in a file provider allows for more secure content sharing
+        val fileProvider = FileProvider.getUriForFile(
+            this.requireContext(),
+            "com.example.foodie_app.fileprovider",
+            photoFile!!
+        )
+        takePictureIntent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            fileProvider
+        ) //passing in a file provider allows for more secure content sharing
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {

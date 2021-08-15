@@ -1,5 +1,6 @@
 package com.example.foodie_app
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,7 +18,8 @@ class DishListAdapter(private val onItemClicked: (Dish) -> Unit) :
             binding.apply {
                 tvDishName.text = currDish.name
                 tvDishLocation.text = currDish.location
-                currDish.photoArray?.let{
+                currDish.photoArray?. let{
+                    Log.d("DishListAdapter", "photo for : ${currDish.name}")
                     imgDish.setImageBitmap(BitmapUtility.getImage(currDish.photoArray!!))
                 }
 
