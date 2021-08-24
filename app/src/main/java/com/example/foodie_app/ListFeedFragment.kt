@@ -38,7 +38,7 @@ class ListFeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = DishListAdapter{
+        val adapter = DishListAdapter(this.requireContext()){
         }
         binding.recyclerView.adapter = adapter
         viewModel.allDishes.observe(this.viewLifecycleOwner){

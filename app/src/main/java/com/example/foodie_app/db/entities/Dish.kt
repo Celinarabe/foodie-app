@@ -11,7 +11,7 @@ data class Dish (
     var date: Long,
     var location: String,
     var notes: String,
-    var photoArray: ByteArray?
+    val dishUri: String
 )
 {
     //every entity needs a primary key

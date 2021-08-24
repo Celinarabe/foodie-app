@@ -15,17 +15,17 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         }
     }
 
-    private fun getNewDishObj(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: ByteArray?) : Dish{
+    private fun getNewDishObj(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String) : Dish{
         return Dish(
             name = newName,
             date = newDate,
             location = newLocation,
             notes = newNotes,
-            photoArray = newPhoto
+            dishUri = newPhoto
         )
     }
 
-    fun addNewDish(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: ByteArray?){
+    fun addNewDish(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String){
         val newDish = getNewDishObj(newName, newDate, newLocation, newNotes, newPhoto)
         insertDish(newDish)
     }

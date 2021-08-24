@@ -1,11 +1,13 @@
 package com.example.foodie_app
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -15,12 +17,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.foodie_app.databinding.FragmentNewDishBinding
-import com.example.foodie_app.utilities.BitmapUtility
 import com.example.foodie_app.utilities.TimeUtility
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
@@ -32,19 +36,15 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.roundToInt
+
 
 
 class NewDishFragment : Fragment() {
-    /*
-     * VIEW BINDING
-     */
-    //reference to view binding object
-    private var _binding: FragmentNewDishBinding? = null
 
+    //view binding
+    private var _binding: FragmentNewDishBinding? = null
     //non null assertion when you know its not null
     private val binding get() = _binding!!
-
     //DishViewModel thats shared across all fragments in MainActivity
     private val sharedViewModel: DishViewModel by activityViewModels() {
         DishViewModelFactory(
@@ -53,29 +53,19 @@ class NewDishFragment : Fragment() {
         )
     }
 
-    /*
-     * DATE PICKER
-     */
-    //today's date to populate default date in date picker
-    private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
-
-    //datePicker object
-    private lateinit var datePicker: MaterialDatePicker<Long>
-
-
-    /*
-     * IMAGE HANDLING
-     */
+    private val STORAGE_PERMISSION_CODE = 1
     //image capture request code
     val REQUEST_IMAGE_CAPTURE = 1
 
+    //Date Picker - default today's date
+    private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
+    //datePicker object
+    private lateinit var datePicker: MaterialDatePicker<Long>
+
     //photo file obj uploaded by user
     private var photoFile: File? = null
+    private var photoUri: Uri? = null
 
-    private var photoPath: String = ""
-
-    //photo byte array to insert into db
-    private var photoArray: ByteArray? = null
 
 
     override fun onCreateView(
@@ -104,17 +94,18 @@ class NewDishFragment : Fragment() {
 
     //save dish to ViewModel
     private fun saveDish() {
-
         val newName: String = binding.etDishName.text.toString()
         val newDate: Long = selectedDate
         val location: String = binding.etLocation.text.toString()
         val notes: String = binding.etNotes.text.toString()
         if (sharedViewModel.isEntryValid(newName)) {
-            sharedViewModel.addNewDish(newName, newDate, location, notes, photoArray)
+            sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString())
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
         }
     }
+
+
 
     //create MaterialUI's date picker
     private fun buildDatePicker() {
@@ -136,29 +127,20 @@ class NewDishFragment : Fragment() {
 
     //sets imageView to user's photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        lateinit var takenImage: Bitmap
-        lateinit var finalPhoto: Bitmap
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         try {
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-                photoPath = photoFile?.absolutePath.toString()
-                takenImage = BitmapFactory.decodeFile(photoPath)
-                finalPhoto = rotatePhoto(resizePhoto(takenImage))
-
-            } else {
-                super.onActivityResult(requestCode, resultCode, data)
-                val imageUri = data?.data;
-                takenImage =
-                    MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
-                finalPhoto = resizePhoto(takenImage)
+                photoUri = Uri.fromFile(photoFile)
+            } else { //getting image from gallery
+                if (data !== null) {
+                    photoUri = data?.data!!
+                }
             }
-
-            photoArray = BitmapUtility.getBytes(finalPhoto)
-            binding.imageView.setImageBitmap(finalPhoto)
+            Glide.with(requireContext()).load(photoUri).into(binding.imageView)
         } catch (e: IOException) {
             Log.i("TAG", "Some exception $e")
         }
-
-
     }
 
     //alerts user to upload or take photo
@@ -168,7 +150,7 @@ class NewDishFragment : Fragment() {
             .setMessage("Select a method to add a photo")
             .setCancelable(true)
             .setNegativeButton("Choose From Gallery") { _, _ ->
-                dispatchChoosePictureIntent()
+                showPermission()
             }
             .setPositiveButton("Take Photo") { _, _ ->
                 dispatchTakePictureIntent()
@@ -176,31 +158,49 @@ class NewDishFragment : Fragment() {
             .show()
     }
 
-    fun rotatePhoto(oldPhoto: Bitmap) : Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(90.0F)
-        val rotatedBitmap = Bitmap.createBitmap(
-            oldPhoto,
-            0,
-            0,
-            oldPhoto.width,
-            oldPhoto.height,
-            matrix,
-            true
-        )
-        return rotatedBitmap
+    //check permission and if not granted, launch request
+    fun showPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            dispatchChoosePictureIntent()
+        } else{
+            requestStoragePermission()
+        }
     }
 
-
-    //resizes and rotates photo
-    fun resizePhoto(oldPhoto: Bitmap): Bitmap {
-        val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        val aspectRatio = oldPhoto.width / oldPhoto.height
-        val newWidth = displayMetrics.widthPixels
-        val newHeight = (newWidth.toDouble() / aspectRatio).roundToInt()
-        return Bitmap.createScaledBitmap(oldPhoto, newWidth, newHeight, false)
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)){
+            AlertDialog.Builder(requireContext()).setTitle("Permission Needed").setMessage("Allow app to access photos?")
+                .setPositiveButton("OK", DialogInterface.OnClickListener(
+                    fun (dialogInterface: DialogInterface, which: Int){
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
+                    }
+                ))
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener(
+                    fun (dialogInterface: DialogInterface, which:Int) {
+                        dialogInterface.dismiss()
+                    }
+                ))
+                .create().show()
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
+        }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     //creates file w/ unique name
     private fun createImageFile(): File {
@@ -234,5 +234,4 @@ class NewDishFragment : Fragment() {
             Toast.makeText(this.context, "Unable to open camera", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

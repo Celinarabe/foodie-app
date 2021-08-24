@@ -8,7 +8,7 @@ import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.db.entities.DishDAO
 
 
-@Database(entities = [Dish::class], version = 4, exportSchema = false)
+@Database(entities = [Dish::class], version = 10, exportSchema = false)
 public abstract class DishDatabase : RoomDatabase() {
 
     abstract fun dishDAO(): DishDAO

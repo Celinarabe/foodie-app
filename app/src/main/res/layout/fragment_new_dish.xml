@@ -6,12 +6,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="60dp"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:fillViewport="true" >
-
-
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,8 +20,8 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_baseline_fastfood_24"
             tools:layout_editor_absoluteX="110dp"
