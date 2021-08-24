@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_listFeedFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listFeedFragment_to_dishDetailFragment"
+            app:destination="@id/dishDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -44,5 +47,14 @@
         <action
             android:id="@+id/action_profileFragment_to_listFeedFragment"
             app:destination="@id/listFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dishDetailFragment"
+        android:name="com.example.foodie_app.DishDetailFragment"
+        android:label="fragment_dish_detail"
+        tools:layout="@layout/fragment_dish_detail" >
+        <argument
+            android:name="item_id"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -32,6 +32,10 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
 
     fun isEntryValid(newName: String):Boolean = newName.isNotBlank()
 
+    fun getDish(id:Int) : LiveData<Dish> {
+        return dishDao.getDish(id).asLiveData()
+    }
+
 
 
 

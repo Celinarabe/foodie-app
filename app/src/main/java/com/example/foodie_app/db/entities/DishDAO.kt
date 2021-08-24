@@ -19,7 +19,11 @@ interface DishDAO {
 
 
     //we use a flow to automatically update based on changes to the db
+    //since its a flow return type, Kotlin knows to run on a coroutine
     @Query("SELECT * FROM dish ORDER BY idx DESC")
     fun getAllDishes() : Flow<List<Dish>>
+
+    @Query("SELECT * FROM dish WHERE idx == :id")
+    fun getDish(id: Int): Flow<Dish>
     
 }
