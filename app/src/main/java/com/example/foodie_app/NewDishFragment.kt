@@ -176,6 +176,7 @@ class NewDishFragment : Fragment() {
 
     //sets imageView to user's photo
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d("NewDishFragment", "got a result: $requestCode $resultCode ${Activity.RESULT_OK}")
         val displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         try {
@@ -186,6 +187,7 @@ class NewDishFragment : Fragment() {
                     photoUri = data?.data!!
                 }
             }
+            Log.d("NewDishFragment", "newURI: $photoUri")
             Glide.with(requireContext()).load(photoUri).into(binding.imageView)
         } catch (e: IOException) {
             Log.i("TAG", "Some exception $e")
