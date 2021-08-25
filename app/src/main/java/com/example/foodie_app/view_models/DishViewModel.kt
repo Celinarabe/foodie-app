@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 class DishViewModel(private val dishDao: DishDAO): ViewModel() {
     val allDishes : LiveData<List<Dish>> = dishDao.getAllDishes().asLiveData()
 
-
     private fun insertDish(newDish:Dish) {
         viewModelScope.launch {
             dishDao.insertDish(newDish)

@@ -49,7 +49,7 @@
         android:layout_weight="1"
         android:layout_marginStart="16dp"
         tools:text="ahhhmazing place" />
-    
+
 
     <Button
         android:id="@+id/delete_dish"

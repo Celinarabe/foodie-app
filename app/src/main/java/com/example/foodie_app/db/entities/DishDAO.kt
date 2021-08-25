@@ -18,6 +18,8 @@ interface DishDAO {
     suspend fun updateDish(dish: Dish)
 
 
+
+
     //we use a flow to automatically update based on changes to the db
     //since its a flow return type, Kotlin knows to run on a coroutine
     @Query("SELECT * FROM dish ORDER BY idx DESC")
