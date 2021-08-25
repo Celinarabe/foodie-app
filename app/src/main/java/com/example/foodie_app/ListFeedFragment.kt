@@ -5,16 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodie_app.databinding.FragmentListFeedBinding
+import com.example.foodie_app.view_models.DishViewModel
+import com.example.foodie_app.view_models.DishViewModelFactory
 
 
 class ListFeedFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //DishViewModel
+    //private val sharedViewModel: DishViewModel by activityViewModels()
+    //reference to the view binding object
+    private var _binding: FragmentListFeedBinding? = null
+    //non null assertion when you know its not null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val viewModel: DishViewModel by activityViewModels {
+        DishViewModelFactory(
+            (activity?.application as DishApplication).database.dishDAO()
+        )
     }
 
     override fun onCreateView(
@@ -22,7 +32,28 @@ class ListFeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_feed, container, false)
+        _binding = FragmentListFeedBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = DishListAdapter(this.requireContext()){
+        }
+        binding.recyclerView.adapter = adapter
+        viewModel.allDishes.observe(this.viewLifecycleOwner){
+            dishes -> dishes.let {
+                adapter.submitList(it)
+        }
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
+        binding.floatingActionButton.setOnClickListener {
+            val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
+                getString(R.string.add_fragment_title)
+            )
+            this.findNavController().navigate(action)
+        }
+
+
+    }
 }

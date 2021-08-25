@@ -1,25 +1,237 @@
 package com.example.foodie_app
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.foodie_app.databinding.FragmentNewDishBinding
+import com.example.foodie_app.utilities.TimeUtility
+import com.example.foodie_app.view_models.DishViewModel
+import com.example.foodie_app.view_models.DishViewModelFactory
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 
 class NewDishFragment : Fragment() {
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    //view binding
+    private var _binding: FragmentNewDishBinding? = null
+    //non null assertion when you know its not null
+    private val binding get() = _binding!!
+    //DishViewModel thats shared across all fragments in MainActivity
+    private val sharedViewModel: DishViewModel by activityViewModels() {
+        DishViewModelFactory(
+            (activity?.application as DishApplication).database
+                .dishDAO()
+        )
     }
+
+    private val STORAGE_PERMISSION_CODE = 1
+    //image capture request code
+    val REQUEST_IMAGE_CAPTURE = 1
+
+    //Date Picker - default today's date
+    private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
+    //datePicker object
+    private lateinit var datePicker: MaterialDatePicker<Long>
+
+    //photo file obj uploaded by user
+    private var photoFile: File? = null
+    private var photoUri: Uri? = null
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_dish, container, false)
+        _binding = FragmentNewDishBinding.inflate(inflater, container, false)
+        buildDatePicker()
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
+            btnDate.text = TimeUtility.getDateTime(selectedDate)
+            btnDate.setOnClickListener {
+                datePicker.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
+            }
+            addPicBtn.setOnClickListener {
+                this@NewDishFragment.showPictureOptions()
+            }
+            btnSave.setOnClickListener { this@NewDishFragment.saveDish() }
+        }
+    }
+
+
+    //save dish to ViewModel
+    private fun saveDish() {
+        val newName: String = binding.etDishName.text.toString()
+        val newDate: Long = selectedDate
+        val location: String = binding.etLocation.text.toString()
+        val notes: String = binding.etNotes.text.toString()
+        if (sharedViewModel.isEntryValid(newName)) {
+            sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString())
+            val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
+            findNavController().navigate(action)
+        }
+    }
+
+
+
+    //create MaterialUI's date picker
+    private fun buildDatePicker() {
+        val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
+        //constrain calendar to today and backwards
+        val constraintsBuilder =
+            CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
+        datePickerBuilder.setTitleText("Select Date")
+        datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
+        datePicker = datePickerBuilder.build()
+        datePicker.addOnPositiveButtonClickListener {
+            // Respond to positive button click.
+            val dateSelection = datePicker.selection
+            val dateString = TimeUtility.getDateTime(dateSelection!!)
+            binding.btnDate.text = dateString
+        }
+    }
+
+
+    //sets imageView to user's photo
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        try {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                photoUri = Uri.fromFile(photoFile)
+            } else { //getting image from gallery
+                if (data !== null) {
+                    photoUri = data?.data!!
+                }
+            }
+            Glide.with(requireContext()).load(photoUri).into(binding.imageView)
+        } catch (e: IOException) {
+            Log.i("TAG", "Some exception $e")
+        }
+    }
+
+    //alerts user to upload or take photo
+    private fun showPictureOptions() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Add Photo")
+            .setMessage("Select a method to add a photo")
+            .setCancelable(true)
+            .setNegativeButton("Choose From Gallery") { _, _ ->
+                showPermission()
+            }
+            .setPositiveButton("Take Photo") { _, _ ->
+                dispatchTakePictureIntent()
+            }
+            .show()
+    }
+
+    //check permission and if not granted, launch request
+    fun showPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            dispatchChoosePictureIntent()
+        } else{
+            requestStoragePermission()
+        }
+    }
+
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)){
+            AlertDialog.Builder(requireContext()).setTitle("Permission Needed").setMessage("Allow app to access photos?")
+                .setPositiveButton("OK", DialogInterface.OnClickListener(
+                    fun (dialogInterface: DialogInterface, which: Int){
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
+                    }
+                ))
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener(
+                    fun (dialogInterface: DialogInterface, which:Int) {
+                        dialogInterface.dismiss()
+                    }
+                ))
+                .create().show()
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    //creates file w/ unique name
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = this.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val uniquePrefix: String = "JPEG_${timeStamp}_"
+        return File.createTempFile(uniquePrefix, ".jpg", storageDir)
+    }
+
+    private fun dispatchChoosePictureIntent() {
+        val intent1 = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent1, 2)
+    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        photoFile = createImageFile()
+        val fileProvider = FileProvider.getUriForFile(
+            this.requireContext(),
+            "com.example.foodie_app.fileprovider",
+            photoFile!!
+        )
+        takePictureIntent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            fileProvider
+        ) //passing in a file provider allows for more secure content sharing
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+            Toast.makeText(this.context, "Unable to open camera", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
