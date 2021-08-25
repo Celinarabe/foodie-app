@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 //Fields in the class correspond to columns in the table
 @Entity
 data class Dish (
+    //every entity needs a primary key
+    @PrimaryKey(autoGenerate = true)
+    var idx: Int = 0,
+
     var name: String,
     var date: Long,
     var location: String,
     var notes: String,
     val dishUri: String
 )
-{
-    //every entity needs a primary key
-    @PrimaryKey(autoGenerate = true)
-    var idx: Int = 0
-}
+
 

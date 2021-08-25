@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,8 +24,10 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.foodie_app.databinding.FragmentNewDishBinding
+import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.utilities.TimeUtility
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
@@ -60,11 +63,14 @@ class NewDishFragment : Fragment() {
     //Date Picker - default today's date
     private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
     //datePicker object
-    private lateinit var datePicker: MaterialDatePicker<Long>
+    private var datePicker: MaterialDatePicker<Long>? = null
 
     //photo file obj uploaded by user
     private var photoFile: File? = null
     private var photoUri: Uri? = null
+
+    private var currDish: Dish? = null
+    private val navigationArgs: NewDishFragmentArgs by navArgs()
 
 
 
@@ -74,22 +80,65 @@ class NewDishFragment : Fragment() {
     ): View? {
         _binding = FragmentNewDishBinding.inflate(inflater, container, false)
         buildDatePicker()
+        buildDatePicker()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val dishID = navigationArgs.dishId
+        binding.addPicBtn.setOnClickListener {
+            this@NewDishFragment.showPictureOptions()
+        }
+        binding.btnDate.setOnClickListener {
+            datePicker?.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
+        }
+        if (dishID == -1) NewDishBind() else {
+            sharedViewModel.getDish(dishID).observe(this.viewLifecycleOwner) { selectedItem ->
+                currDish = selectedItem
+                EditDishBind(currDish!!)
+            }
+        }
+    }
+
+    private fun NewDishBind() {
         binding?.apply {
             btnDate.text = TimeUtility.getDateTime(selectedDate)
-            btnDate.setOnClickListener {
-                datePicker.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
-            }
-            addPicBtn.setOnClickListener {
-                this@NewDishFragment.showPictureOptions()
-            }
             btnSave.setOnClickListener { this@NewDishFragment.saveDish() }
         }
     }
+
+    //bind view
+    private fun EditDishBind(dish: Dish){
+
+            binding.apply {
+                etDishName.setText(dish.name, TextView.BufferType.SPANNABLE)
+                etLocation.setText(dish.location, TextView.BufferType.SPANNABLE)
+                btnDate.text = TimeUtility.getDateTime(dish.date)
+                etNotes.setText(dish.notes, TextView.BufferType.SPANNABLE)
+                val uri = Uri.parse(dish.dishUri)
+                Glide.with(requireContext()).load(uri).into(imageView)
+                photoUri = uri
+                btnSave.setOnClickListener{ this@NewDishFragment.updateDish()}
+
+        }
+    }
+
+    //TO DO: consolidate save/update dish
+    private fun updateDish() {
+        val newName: String = binding.etDishName.text.toString()
+        Log.d("NewDishFragment", "new name: ${newName}")
+        val newDate: Long = selectedDate
+        val location: String = binding.etLocation.text.toString()
+        val notes: String = binding.etNotes.text.toString()
+        if (sharedViewModel.isEntryValid(newName)) {
+            sharedViewModel.updateDish(currDish!!.idx,newName, newDate, location, notes, photoUri.toString())
+            Toast.makeText(requireContext(), "Successfully Updated", Toast.LENGTH_SHORT).show()
+            val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
+            findNavController().navigate(action)
+        }
+    }
+
 
 
     //save dish to ViewModel
@@ -116,9 +165,9 @@ class NewDishFragment : Fragment() {
         datePickerBuilder.setTitleText("Select Date")
         datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
         datePicker = datePickerBuilder.build()
-        datePicker.addOnPositiveButtonClickListener {
+        datePicker!!.addOnPositiveButtonClickListener {
             // Respond to positive button click.
-            val dateSelection = datePicker.selection
+            val dateSelection = datePicker!!.selection
             val dateString = TimeUtility.getDateTime(dateSelection!!)
             binding.btnDate.text = dateString
         }

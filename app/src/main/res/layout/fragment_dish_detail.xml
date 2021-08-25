@@ -20,7 +20,7 @@
         android:id="@+id/tvDishName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:layout_marginStart="16dp"
         android:paddingTop="32dp"
         android:textSize="20sp"
         tools:text="Spaghetti" />
@@ -29,7 +29,7 @@
         android:id="@+id/tvDishLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:layout_marginStart="16dp"
         tools:text="Olive Garden" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:paddingStart="16dp"
+        android:layout_marginStart="16dp"
         android:textSize="14sp"
         tools:text="08/24/2021" />
 
@@ -47,18 +47,19 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingStart="16dp"
+        android:layout_marginStart="16dp"
         tools:text="ahhhmazing place" />
 
     <Button
         android:id="@+id/delete_dish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:text="@string/delete" />
+        android:layout_marginStart="16dp"
+        android:text="@string/delete"
+        android:textSize="14sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/edit_item"
+        android:id="@+id/fabEditDish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

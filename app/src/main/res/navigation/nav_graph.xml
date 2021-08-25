@@ -20,6 +20,10 @@
             android:name="title_bar"
             android:defaultValue="Edit Item"
             app:argType="string" />
+        <argument
+            android:name="dish_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/listFeedFragment"
@@ -51,10 +55,13 @@
     <fragment
         android:id="@+id/dishDetailFragment"
         android:name="com.example.foodie_app.DishDetailFragment"
-        android:label="fragment_dish_detail"
-        tools:layout="@layout/fragment_dish_detail" >
+        android:label="Details"
+        tools:layout="@layout/fragment_dish_detail">
         <argument
             android:name="item_id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_dishDetailFragment_to_newDishFragment"
+            app:destination="@id/newDishFragment" />
     </fragment>
 </navigation>

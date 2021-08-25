@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.foodie_app.databinding.FragmentDishDetailBinding
@@ -42,7 +43,10 @@ class DishDetailFragment : Fragment() {
             tvDishNotes.text = dish.notes
             val uri = Uri.parse(currDish.dishUri)
             Glide.with(requireContext()).load(uri).into(imgSelectedDish)
-
+        }
+        binding.fabEditDish.setOnClickListener {
+            val action = DishDetailFragmentDirections.actionDishDetailFragmentToNewDishFragment("Edit Dish", dish.idx)
+            this.findNavController().navigate(action)
         }
     }
 

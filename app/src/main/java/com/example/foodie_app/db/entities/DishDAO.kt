@@ -1,9 +1,6 @@
 package com.example.foodie_app.db.entities
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 //DAO - Data Access Object
@@ -16,6 +13,9 @@ interface DishDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE) //what happens if inserting an entry already in the table? we replace is
     suspend fun insertDish(dish: Dish)
+
+    @Update
+    suspend fun updateDish(dish: Dish)
 
 
     //we use a flow to automatically update based on changes to the db
