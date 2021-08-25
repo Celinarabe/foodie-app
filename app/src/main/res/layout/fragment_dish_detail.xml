@@ -52,7 +52,7 @@
 
 
     <Button
-        android:id="@+id/delete_dish"
+        android:id="@+id/btnDeleteDish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

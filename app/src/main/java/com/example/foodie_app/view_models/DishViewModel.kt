@@ -60,6 +60,14 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         }
     }
 
+    fun deleteDish(dish:Dish) {
+        viewModelScope.launch {
+            dishDao.delete(dish)
+        }
+    }
+
+
+
 
 
 
