@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         // Set up the action bar for use with the NavController
         NavigationUI.setupActionBarWithNavController(this, navController)
-        //bottomNavView.setupWithNavController(navController)
+
+    //bottomNavView.setupWithNavController(navController)
     }
 
 
