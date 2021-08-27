@@ -11,11 +11,12 @@
             android:orientation="vertical">
 
                 <!-- Media -->
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgDish"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    app:srcCompat="@drawable/ic_add"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_baseline_fastfood_24"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/content_description_media"
             />

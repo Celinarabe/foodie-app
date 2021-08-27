@@ -57,7 +57,7 @@ class ListFeedFragment : Fragment() {
 
     private fun chooseLayout() {
         //create adapter
-        val adapter = DishListAdapter(this.requireContext()) {
+        val adapter = DishListAdapter(isLinearLayoutManager,this.requireContext()) {
             val action = ListFeedFragmentDirections.actionListFeedFragmentToDishDetailFragment(it.idx)
             this.findNavController().navigate(action)
         }
@@ -66,7 +66,7 @@ class ListFeedFragment : Fragment() {
         if (isLinearLayoutManager) {
             binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         } else {
-            binding.recyclerView.layoutManager = GridLayoutManager(this.context, 3, GridLayoutManager.VERTICAL, false)
+            binding.recyclerView.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
             Log.d("ListFeedFragment", "in the else")
         }
 
