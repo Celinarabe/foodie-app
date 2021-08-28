@@ -102,6 +102,12 @@ class NewDishFragment : Fragment() {
             sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString())
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
+        } else {
+            // Set error text
+            binding.etDishName.error = getString(R.string.dish_name_validation)
+
+//            // Clear error text
+//            passwordLayout.error = null
         }
     }
 
