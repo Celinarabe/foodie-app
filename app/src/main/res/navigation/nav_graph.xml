@@ -20,6 +20,10 @@
             android:name="title_bar"
             android:defaultValue="Edit Item"
             app:argType="string" />
+        <argument
+            android:name="dish_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/listFeedFragment"
@@ -32,6 +36,9 @@
         <action
             android:id="@+id/action_listFeedFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listFeedFragment_to_dishDetailFragment"
+            app:destination="@id/dishDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -44,5 +51,17 @@
         <action
             android:id="@+id/action_profileFragment_to_listFeedFragment"
             app:destination="@id/listFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dishDetailFragment"
+        android:name="com.example.foodie_app.DishDetailFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_dish_detail">
+        <argument
+            android:name="item_id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_dishDetailFragment_to_newDishFragment"
+            app:destination="@id/newDishFragment" />
     </fragment>
 </navigation>

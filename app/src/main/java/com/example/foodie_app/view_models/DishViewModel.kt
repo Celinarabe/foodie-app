@@ -1,5 +1,6 @@
 package com.example.foodie_app.view_models
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.db.entities.DishDAO
@@ -7,7 +8,6 @@ import kotlinx.coroutines.launch
 
 class DishViewModel(private val dishDao: DishDAO): ViewModel() {
     val allDishes : LiveData<List<Dish>> = dishDao.getAllDishes().asLiveData()
-
 
     private fun insertDish(newDish:Dish) {
         viewModelScope.launch {
@@ -31,6 +31,34 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
     }
 
     fun isEntryValid(newName: String):Boolean = newName.isNotBlank()
+
+    fun getDish(id:Int) : LiveData<Dish> {
+        return dishDao.getDish(id).asLiveData()
+    }
+
+    fun updateDish(id: Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String) {
+        val updatedDish = getUpdatedItemEntry(id, newName, newDate, newLocation, newNotes, newPhoto)
+        updateDish(updatedDish)
+    }
+
+    private fun getUpdatedItemEntry(id:Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String):Dish {
+        return Dish(
+            idx = id,
+            name = newName,
+            date = newDate,
+            location = newLocation,
+            notes = newNotes,
+            dishUri = newPhoto
+
+        )
+    }
+
+    private fun updateDish(dish:Dish) {
+        Log.d("DishViewModel", "in view model ${dish}")
+        viewModelScope.launch {
+            dishDao.updateDish(dish)
+        }
+    }
 
 
 
