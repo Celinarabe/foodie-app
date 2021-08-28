@@ -18,4 +18,10 @@
     <string name="add_new_item">Add New Item</string>
     <string name="add_fragment_title">New Dish</string>
     <string name="dish_name_validation">Must enter a name</string>
+
+    <string name="delete">Delete</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="selected_dish_content_desc">Selected Dish</string>
+    <string name="dish_description">current dish</string>
+    <string name="add_new_dish">New Dish</string>
 </resources>
