@@ -2,42 +2,80 @@ package com.example.foodie_app
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.foodie_app.databinding.FragmentGridItemBinding
 import com.example.foodie_app.databinding.FragmentListItemBinding
 import com.example.foodie_app.db.entities.Dish
 
 
-class DishListAdapter(private val context: Context, private val onItemClicked: (Dish) -> Unit) :
-    ListAdapter<Dish, DishListAdapter.DishViewHolder>(DiffCallback) {
+class DishListAdapter(private val isLinear: Boolean, private val context: Context, private val onItemClicked: (Dish) -> Unit) :
+    ListAdapter<Dish, RecyclerView.ViewHolder>(DiffCallback) {
 
     inner class DishViewHolder(private var binding: FragmentListItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(currDish : Dish){
             binding.apply {
                 tvDishName.text = currDish.name
                 tvDishLocation.text = currDish.location
-                var uri = Uri.parse(currDish.dishUri)
-                Glide.with(context).load(uri).into(imgDish)
+                if (currDish.dishUri != "null") {
+                    var uri = Uri.parse(currDish.dishUri)
+                    Glide.with(context).load(uri).centerCrop().into(imgDish)
+                } else {
+
+                }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishListAdapter.DishViewHolder {
-        val viewObj = FragmentListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return DishViewHolder(viewObj)
+    inner class DishViewHolderGrid(private var binding: FragmentGridItemBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(currDish : Dish){
+            binding.apply {
+
+                if (currDish.dishUri != "null") {
+                    Log.d("DishListAdapter", "${currDish.dishUri}")
+                    var uri = Uri.parse(currDish.dishUri)
+                    Glide.with(context).load(uri).fitCenter().into(imgDish)
+                } else {
+                    //Glide.with(context).load(R.drawable.ic_baseline_fastfood_24).into(imgDish)
+                }
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+        return if (isLinear) {
+            val viewObj =
+                FragmentListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            DishViewHolder(viewObj)
+        } else {
+            val viewObj =
+                FragmentGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            DishViewHolderGrid(viewObj)
+        }
+    }
+
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.itemView.setOnClickListener{
             onItemClicked(currentItem)
         }
-        holder.bind(currentItem)
+        if (isLinear) {
+            Log.d("DishListAdapter", "${holder}")
+            (holder as DishViewHolder).bind(currentItem)
+        } else {
+            (holder as DishViewHolderGrid).bind(currentItem)
+        }
     }
+
+
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Dish>() {

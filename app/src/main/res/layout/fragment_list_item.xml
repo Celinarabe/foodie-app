@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/cardview_dark_background"
+    app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -11,11 +14,12 @@
             android:orientation="vertical">
 
                 <!-- Media -->
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgDish"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    app:srcCompat="@drawable/ic_add"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_baseline_fastfood_24"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/content_description_media"
             />

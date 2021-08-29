@@ -6,12 +6,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.2203125" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_feed_list.xml" value="0.31866666666666665" />
         <entry key="app/src/main/res/layout/fragment_dish_detail.xml" value="0.4306306306306306" />
+<<<<<<< HEAD
+        <entry key="app/src/main/res/layout/fragment_grid_item.xml" value="0.13559322033898305" />
+        <entry key="app/src/main/res/layout/fragment_list_feed.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/menu_example.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_example.xml" value="0.17747747747747747" />
+=======
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17747747747747747" />
         <entry key="app/src/main/res/layout/fragment_list_feed.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_new_dish.xml" value="0.25" />
+>>>>>>> 3b1e3ae4cb356f7114aba0cb5ed020bbec55941a
       </map>
     </option>
   </component>
