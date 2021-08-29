@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".DishDetailFragment">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgSelectedDish"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -56,9 +56,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/delete_dish"
-        style="@style/addPhoto"
+        style="@style/customTextBtn"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -71,9 +72,9 @@
         app:layout_constraintEnd_toEndOf="parent"
          />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/fabEditDish"
-        style="@style/addPhoto"
+        style="@style/customOutlineBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"

@@ -41,8 +41,10 @@ class DishDetailFragment : Fragment() {
             tvDate.text = getDateTime(dish.date)
             tvDishLocation.text = dish.location
             tvDishNotes.text = dish.notes
-            val uri = Uri.parse(currDish.dishUri)
-            Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+            if (currDish.dishUri != "null") {
+                val uri = Uri.parse(currDish.dishUri)
+                Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+            }
         }
         binding.fabEditDish.setOnClickListener {
             val action = DishDetailFragmentDirections.actionDishDetailFragmentToNewDishFragment("Edit Dish", dish.idx)
