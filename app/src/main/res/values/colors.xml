@@ -11,5 +11,9 @@
     <color name="magenta">#FA0066</color>
     <color name="orange">#FF6E45</color>
     <color name="light_orange">#ffa072</color>
+    <color name="gray">#D3D3D3</color>
+
+
+
 
 </resources>

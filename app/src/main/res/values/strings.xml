@@ -25,4 +25,5 @@
     <string name="dish_description">current dish</string>
     <string name="switch_view">Toggle between gallery and list view</string>
     <string name="add_new_dish">New Dish</string>
+    <string name="edit_dish">Edit</string>
 </resources>
