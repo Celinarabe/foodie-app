@@ -61,7 +61,7 @@ class NewDishFragment : Fragment() {
     val REQUEST_IMAGE_CAPTURE = 1
 
     //Date Picker - default today's date
-    private val selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
+    private var selectedDate = MaterialDatePicker.todayInUtcMilliseconds()
     //datePicker object
     private var datePicker: MaterialDatePicker<Long>? = null
 
@@ -79,7 +79,6 @@ class NewDishFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNewDishBinding.inflate(inflater, container, false)
-        buildDatePicker()
         buildDatePicker()
         return binding.root
     }
@@ -151,6 +150,12 @@ class NewDishFragment : Fragment() {
             sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString())
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
+        } else {
+            // Set error text
+            binding.etDishName.error = getString(R.string.dish_name_validation)
+
+//            // Clear error text
+//            passwordLayout.error = null
         }
     }
 
@@ -169,7 +174,9 @@ class NewDishFragment : Fragment() {
             // Respond to positive button click.
             val dateSelection = datePicker!!.selection
             val dateString = TimeUtility.getDateTime(dateSelection!!)
+            selectedDate = dateSelection
             binding.btnDate.text = dateString
+
         }
     }
 

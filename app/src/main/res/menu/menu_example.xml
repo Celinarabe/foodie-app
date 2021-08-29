@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- sample_menu.xml -->
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_switch_view"
+        android:icon="@drawable/ic_baseline_grid_on_24"
+        android:title="@string/switch_view"
+        app:showAsAction="ifRoom"/>
+
+</menu>
