@@ -1,5 +1,7 @@
 package com.example.foodie_app
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodie_app.databinding.FragmentListFeedBinding
+import com.example.foodie_app.utilities.Constants
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
 
@@ -21,8 +24,10 @@ class ListFeedFragment : Fragment() {
     private var _binding: FragmentListFeedBinding? = null
     //non null assertion when you know its not null
     private val binding get() = _binding!!
+    //shared preferences to keep track of list/gallery view
+    private lateinit var sharedPref: SharedPreferences
 
-    private var isLinearLayoutManager = false
+    private var isLinearLayoutManager = true
 
     private val viewModel: DishViewModel by activityViewModels {
         DishViewModelFactory(
@@ -46,6 +51,8 @@ class ListFeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("ListFeedFragment", "in onviewcreated")
+        sharedPref = activity?.getSharedPreferences(Constants.SharedPreferencesKey, Context.MODE_PRIVATE)!!
+        isLinearLayoutManager = sharedPref.getBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager) //true is default
         chooseLayout()
         binding.floatingActionButton.setOnClickListener {
             val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
@@ -109,4 +116,11 @@ class ListFeedFragment : Fragment() {
         }
     }
 
+    //save to shared preferences
+    override fun onPause() {
+        super.onPause()
+        val editor = sharedPref.edit()
+        editor.putBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager )
+        editor.commit() //apply applies changes async compared to commit()
+    }
 }
