@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/listFeedFragment"
         android:name="com.example.foodie_app.ListFeedFragment"
-        android:label="Crunch Time"
+        android:label="Foodie"
         tools:layout="@layout/fragment_list_feed">
         <action
             android:id="@+id/action_listFeedFragment_to_newDishFragment"

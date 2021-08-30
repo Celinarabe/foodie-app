@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">foodie-app</string>
+    <string name="app_name">Foodie</string>
     <string name="title_activity_new_dish">NewDishActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
