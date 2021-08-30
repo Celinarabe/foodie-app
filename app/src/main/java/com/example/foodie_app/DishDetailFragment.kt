@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.example.foodie_app.db.entities.Dish
 import com.example.foodie_app.utilities.TimeUtility.getDateTime
 import com.example.foodie_app.view_models.DishViewModel
 import com.example.foodie_app.view_models.DishViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class DishDetailFragment : Fragment() {
@@ -43,6 +45,9 @@ class DishDetailFragment : Fragment() {
             tvDishNotes.text = dish.notes
             val uri = Uri.parse(currDish.dishUri)
             Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+            btnDeleteDish.setOnClickListener {
+                showConfirmationDialog()
+            }
         }
         binding.fabEditDish.setOnClickListener {
             val action = DishDetailFragmentDirections.actionDishDetailFragmentToNewDishFragment("Edit Dish", dish.idx)
@@ -65,9 +70,36 @@ class DishDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val dishID = navigationArgs.itemId
         sharedViewModel.getDish(dishID).observe(this.viewLifecycleOwner) { selectedDish ->
+            if (selectedDish != null){
             currDish = selectedDish
-            bind(currDish)
+            bind(currDish)}
         }
+    }
+
+    /**
+     * Displays an alert dialog to get the user's confirmation before deleting the item.
+     */
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(android.R.string.dialog_alert_title))
+            .setMessage(getString(R.string.delete_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                deleteItem()
+            }
+            .show()
+    }
+
+    /**
+     * Deletes the current item and navigates to the list fragment.
+     */
+    private fun deleteItem() {
+        sharedViewModel.deleteDish(currDish)
+        //val action = DishDetailFragmentDirections.actionDishDetailFragmentToListFeedFragment()
+        Toast.makeText(requireContext(), "Successfully Deleted", Toast.LENGTH_SHORT).show()
+        findNavController().navigateUp()
+    //findNavController().navigate(action)
     }
 
     /**
