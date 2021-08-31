@@ -46,9 +46,11 @@ class DishDetailFragment : Fragment() {
             if (currDish.dishUri != "null") {
                 val uri = Uri.parse(currDish.dishUri)
                 Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+            } else {
+                imgSelectedDish.setImageResource(R.drawable.ic_baseline_fastfood_24)
             }
             
-            btnDeleteDish.setOnClickListener {
+            deleteDish.setOnClickListener {
                 showConfirmationDialog()
             }
         }
