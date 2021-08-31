@@ -17,7 +17,8 @@ interface DishDAO {
     @Update
     suspend fun updateDish(dish: Dish)
 
-
+    @Delete
+    suspend fun delete(dish:Dish)
 
 
     //we use a flow to automatically update based on changes to the db

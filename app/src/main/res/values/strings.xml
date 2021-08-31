@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">foodie-app</string>
+    <string name="app_name">Foodie</string>
     <string name="title_activity_new_dish">NewDishActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -23,7 +23,14 @@
     <string name="edit_item">Edit Item</string>
     <string name="selected_dish_content_desc">Selected Dish</string>
     <string name="dish_description">current dish</string>
+
+    <string name="delete_question">Are you sure you want to delete this dish?</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="delete_dialog_title">Delete Dish</string>
+
     <string name="switch_view">Toggle between gallery and list view</string>
     <string name="add_new_dish">New Dish</string>
+
     <string name="edit_dish">Edit</string>
 </resources>
