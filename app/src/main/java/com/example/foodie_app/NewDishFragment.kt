@@ -104,6 +104,7 @@ class NewDishFragment : Fragment() {
         binding?.apply {
             btnDate.text = TimeUtility.getDateTime(selectedDate)
             btnSave.setOnClickListener { this@NewDishFragment.saveDish() }
+            imageView.setImageResource(R.drawable.ic_baseline_fastfood_24)
         }
     }
 
