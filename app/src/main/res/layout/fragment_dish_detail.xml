@@ -4,16 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-
+    android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DishDetailFragment">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgSelectedDish"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
+        android:scaleType="centerInside"
         android:contentDescription="@string/dish_description"/>
 
     <TextView
@@ -51,25 +52,43 @@
         tools:text="ahhhmazing place" />
 
 
-    <Button
-        android:id="@+id/btnDeleteDish"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/delete"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabEditDish"
+    <Button
+
+        android:id="@+id/delete_dish"
+        style="@style/customTextBtn"
+
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginEnd="@dimen/margin_between_elements"
         android:layout_marginBottom="@dimen/margin_between_elements"
         android:contentDescription="@string/edit_item"
-        app:srcCompat="@drawable/ic_baseline_edit_24"
+        app:icon="@drawable/ic_baseline_delete_24"
+        android:text="Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/white" />
+         />
+
+    <Button
+        android:id="@+id/fabEditDish"
+        style="@style/customOutlineBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginEnd="@dimen/margin_between_elements"
+        android:layout_marginBottom="@dimen/margin_between_elements"
+        android:contentDescription="@string/edit_item"
+        app:icon="@drawable/ic_baseline_edit_24"
+        android:text="@string/edit_dish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    </LinearLayout>
 
 </LinearLayout>

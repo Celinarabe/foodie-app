@@ -28,8 +28,24 @@
         <item name="iconTint">@color/black</item>
     </style>
 
-    <style name="addPhoto" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="customFabBtn" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/magenta</item>
+    </style>
+
+    <style name="customTextBtn" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="iconTint">@color/magenta</item>
+        <item name="android:textColor">@color/magenta</item>
+    </style>
+
+    <style name="customOutlineBtn" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="iconTint">@color/magenta</item>
+        <item name="android:textColor">@color/magenta</item>
+    </style>
+
+    <style name="customFilledBtn" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/magenta</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

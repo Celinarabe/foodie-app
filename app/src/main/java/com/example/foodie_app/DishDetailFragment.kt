@@ -43,9 +43,14 @@ class DishDetailFragment : Fragment() {
             tvDate.text = getDateTime(dish.date)
             tvDishLocation.text = dish.location
             tvDishNotes.text = dish.notes
-            val uri = Uri.parse(currDish.dishUri)
-            Glide.with(requireContext()).load(uri).into(imgSelectedDish)
-            btnDeleteDish.setOnClickListener {
+            if (currDish.dishUri != "null") {
+                val uri = Uri.parse(currDish.dishUri)
+                Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+            } else {
+                imgSelectedDish.setImageResource(R.drawable.ic_baseline_fastfood_24)
+            }
+            
+            deleteDish.setOnClickListener {
                 showConfirmationDialog()
             }
         }

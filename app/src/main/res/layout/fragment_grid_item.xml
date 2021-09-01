@@ -15,9 +15,5 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_fastfood_24" />
-        <!--    <TextView-->
-        <!--        android:id="@+id/tvDishTitle"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

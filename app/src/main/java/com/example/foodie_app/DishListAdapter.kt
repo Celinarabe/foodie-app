@@ -25,8 +25,6 @@ class DishListAdapter(private val isLinear: Boolean, private val context: Contex
                 if (currDish.dishUri != "null") {
                     var uri = Uri.parse(currDish.dishUri)
                     Glide.with(context).load(uri).centerCrop().into(imgDish)
-                } else {
-
                 }
             }
         }
@@ -37,11 +35,8 @@ class DishListAdapter(private val isLinear: Boolean, private val context: Contex
             binding.apply {
 
                 if (currDish.dishUri != "null") {
-                    Log.d("DishListAdapter", "${currDish.dishUri}")
                     var uri = Uri.parse(currDish.dishUri)
                     Glide.with(context).load(uri).fitCenter().into(imgDish)
-                } else {
-                    //Glide.with(context).load(R.drawable.ic_baseline_fastfood_24).into(imgDish)
                 }
             }
         }
