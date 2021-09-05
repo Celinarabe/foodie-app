@@ -1,4 +1,4 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

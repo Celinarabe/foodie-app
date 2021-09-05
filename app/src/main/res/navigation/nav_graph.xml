@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newDishFragment"
-        android:name="com.example.foodie_app.NewDishFragment"
+        android:name="com.celdevLabs.foodie_app.NewDishFragment"
         android:label="{title_bar}"
         tools:layout="@layout/fragment_new_dish">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/listFeedFragment"
-        android:name="com.example.foodie_app.ListFeedFragment"
+        android:name="com.celdevLabs.foodie_app.ListFeedFragment"
         android:label="Foodie"
         tools:layout="@layout/fragment_list_feed">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.foodie_app.ProfileFragment"
+        android:name="com.celdevLabs.foodie_app.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/dishDetailFragment"
-        android:name="com.example.foodie_app.DishDetailFragment"
+        android:name="com.celdevLabs.foodie_app.DishDetailFragment"
         android:label="Details"
         tools:layout="@layout/fragment_dish_detail">
         <argument

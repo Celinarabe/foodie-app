@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.foodie_app">
+    package="com.celdevLabs.foodie_app">
     <uses-feature android:name="android.hardware.camera"
         android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,7 @@
 
 
     <application
-        android:name=".DishApplication"
+        android:name="com.celdevLabs.foodie_app.DishApplication"
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Foodieapp">
 
         <provider
-            android:authorities="com.example.foodie_app.fileprovider"
+            android:authorities="com.celdevLabs.foodie_app.fileprovider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -29,7 +29,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.celdevLabs.foodie_app.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

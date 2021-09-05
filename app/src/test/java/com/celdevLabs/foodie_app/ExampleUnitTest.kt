@@ -1,4 +1,4 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import org.junit.Test
 

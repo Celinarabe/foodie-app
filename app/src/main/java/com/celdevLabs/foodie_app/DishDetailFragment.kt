@@ -1,21 +1,22 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.foodie_app.databinding.FragmentDishDetailBinding
-import com.example.foodie_app.db.entities.Dish
-import com.example.foodie_app.utilities.TimeUtility.getDateTime
-import com.example.foodie_app.view_models.DishViewModel
-import com.example.foodie_app.view_models.DishViewModelFactory
+import com.celdevLabs.foodie_app.databinding.FragmentDishDetailBinding
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.utilities.TimeUtility.getDateTime
+import com.celdevLabs.foodie_app.view_models.DishViewModel
+import com.celdevLabs.foodie_app.view_models.DishViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -41,11 +42,15 @@ class DishDetailFragment : Fragment() {
         binding.apply{
             tvDishName.text = dish.name
             tvDate.text = getDateTime(dish.date)
-            tvDishLocation.text = dish.location
+            if (dish.location.isNotEmpty()) {
+                tvDishLocation.text = dish.location
+                tvDishLocation.visibility = View.VISIBLE
+            }
             tvDishNotes.text = dish.notes
             if (currDish.dishUri != "null") {
                 val uri = Uri.parse(currDish.dishUri)
                 Glide.with(requireContext()).load(uri).into(imgSelectedDish)
+                imgSelectedDish.scaleType = ImageView.ScaleType.FIT_XY
             } else {
                 imgSelectedDish.setImageResource(R.drawable.ic_baseline_fastfood_24)
             }

@@ -1,4 +1,4 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,10 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.foodie_app.databinding.FragmentListFeedBinding
-import com.example.foodie_app.utilities.Constants
-import com.example.foodie_app.view_models.DishViewModel
-import com.example.foodie_app.view_models.DishViewModelFactory
+import com.celdevLabs.foodie_app.databinding.FragmentListFeedBinding
+import com.celdevLabs.foodie_app.utilities.Constants
+import com.celdevLabs.foodie_app.view_models.DishViewModel
+import com.celdevLabs.foodie_app.view_models.DishViewModelFactory
 
 
 class ListFeedFragment : Fragment() {
