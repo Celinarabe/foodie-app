@@ -1,4 +1,4 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import android.Manifest
 import android.app.Activity
@@ -26,11 +26,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.foodie_app.databinding.FragmentNewDishBinding
-import com.example.foodie_app.db.entities.Dish
-import com.example.foodie_app.utilities.TimeUtility
-import com.example.foodie_app.view_models.DishViewModel
-import com.example.foodie_app.view_models.DishViewModelFactory
+import com.celdevLabs.foodie_app.databinding.FragmentNewDishBinding
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.utilities.TimeUtility
+import com.celdevLabs.foodie_app.view_models.DishViewModel
+import com.celdevLabs.foodie_app.view_models.DishViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -284,7 +284,7 @@ class NewDishFragment : Fragment() {
         photoFile = createImageFile()
         val fileProvider = FileProvider.getUriForFile(
             this.requireContext(),
-            "com.example.foodie_app.fileprovider",
+            "com.celdevLabs.foodie_app.fileprovider",
             photoFile!!
         )
         takePictureIntent.putExtra(

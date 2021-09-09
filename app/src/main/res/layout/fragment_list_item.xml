@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/gray"
     app:cardElevation="0dp">
 
         <LinearLayout
@@ -38,13 +36,16 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     />
+
                 <TextView
-                    android:id="@+id/tvDishLocation"
+                    android:id="@+id/tvDishDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"
                     />
+
+
 
             </LinearLayout>
 
@@ -52,5 +53,6 @@
 
 
         </LinearLayout>
+
 
     </com.google.android.material.card.MaterialCardView>

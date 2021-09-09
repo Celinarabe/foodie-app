@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:padding="8dp"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DishDetailFragment">
@@ -14,8 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/dish_description"/>
+        android:contentDescription="@string/dish_description"
+        android:scaleType="centerInside" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvDishName"
@@ -31,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:visibility="gone"
         tools:text="Olive Garden" />
 
     <TextView
@@ -46,16 +52,18 @@
     <TextView
         android:id="@+id/tvDishNotes"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginStart="16dp"
         tools:text="ahhhmazing place" />
+    </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
     <Button
 
@@ -90,5 +98,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
     </LinearLayout>
+
 
 </LinearLayout>

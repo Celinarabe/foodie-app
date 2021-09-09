@@ -1,11 +1,11 @@
-package com.example.foodie_app.db
+package com.celdevLabs.foodie_app.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.foodie_app.db.entities.Dish
-import com.example.foodie_app.db.entities.DishDAO
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.db.entities.DishDAO
 
 
 @Database(entities = [Dish::class], version = 11, exportSchema = false)

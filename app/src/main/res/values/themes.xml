@@ -31,21 +31,21 @@
     <style name="customFabBtn" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="iconTint">@color/white</item>
         <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/magenta</item>
+        <item name="backgroundTint">@color/orange</item>
     </style>
 
     <style name="customTextBtn" parent="Widget.MaterialComponents.Button.TextButton.Icon">
-        <item name="iconTint">@color/magenta</item>
-        <item name="android:textColor">@color/magenta</item>
+        <item name="iconTint">@color/orange</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
     <style name="customOutlineBtn" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="iconTint">@color/magenta</item>
-        <item name="android:textColor">@color/magenta</item>
+        <item name="iconTint">@color/orange</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
     <style name="customFilledBtn" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/magenta</item>
+        <item name="backgroundTint">@color/orange</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

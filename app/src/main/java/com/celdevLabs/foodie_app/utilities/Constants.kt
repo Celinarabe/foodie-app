@@ -1,4 +1,4 @@
-package com.example.foodie_app.utilities
+package com.celdevLabs.foodie_app.utilities
 
 class Constants {
     companion object {

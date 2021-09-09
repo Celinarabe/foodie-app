@@ -1,8 +1,8 @@
-package com.example.foodie_app.repositories
+package com.celdevLabs.foodie_app.repositories
 
 import androidx.annotation.WorkerThread
-import com.example.foodie_app.db.entities.Dish
-import com.example.foodie_app.db.entities.DishDAO
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.db.entities.DishDAO
 import kotlinx.coroutines.flow.Flow
 
 //repository manages backend queries so your viewModel and front end doesn't need to.

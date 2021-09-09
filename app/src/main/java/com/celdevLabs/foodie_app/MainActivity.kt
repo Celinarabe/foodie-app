@@ -1,11 +1,11 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.foodie_app.databinding.ActivityMainBinding
+import com.celdevLabs.foodie_app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding

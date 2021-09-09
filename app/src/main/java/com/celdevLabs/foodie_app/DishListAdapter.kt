@@ -1,4 +1,4 @@
-package com.example.foodie_app
+package com.celdevLabs.foodie_app
 
 import android.content.Context
 import android.net.Uri
@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.foodie_app.databinding.FragmentGridItemBinding
-import com.example.foodie_app.databinding.FragmentListItemBinding
-import com.example.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.databinding.FragmentGridItemBinding
+import com.celdevLabs.foodie_app.databinding.FragmentListItemBinding
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.utilities.TimeUtility.getDateTime
 
 
 class DishListAdapter(private val isLinear: Boolean, private val context: Context, private val onItemClicked: (Dish) -> Unit) :
@@ -21,7 +22,7 @@ class DishListAdapter(private val isLinear: Boolean, private val context: Contex
         fun bind(currDish : Dish){
             binding.apply {
                 tvDishName.text = currDish.name
-                tvDishLocation.text = currDish.location
+                tvDishDate.text = getDateTime(currDish.date)
                 if (currDish.dishUri != "null") {
                     var uri = Uri.parse(currDish.dishUri)
                     Glide.with(context).load(uri).centerCrop().into(imgDish)

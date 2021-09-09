@@ -1,4 +1,4 @@
-package com.example.foodie_app.db.entities
+package com.celdevLabs.foodie_app.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

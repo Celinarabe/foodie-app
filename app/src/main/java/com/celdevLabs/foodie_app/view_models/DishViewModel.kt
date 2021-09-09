@@ -1,9 +1,9 @@
-package com.example.foodie_app.view_models
+package com.celdevLabs.foodie_app.view_models
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.foodie_app.db.entities.Dish
-import com.example.foodie_app.db.entities.DishDAO
+import com.celdevLabs.foodie_app.db.entities.Dish
+import com.celdevLabs.foodie_app.db.entities.DishDAO
 import kotlinx.coroutines.launch
 
 class DishViewModel(private val dishDao: DishDAO): ViewModel() {
