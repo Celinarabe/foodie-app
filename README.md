@@ -13,4 +13,4 @@ Tech used: Kotlin along with Android Room, SQLite, RecyclerView, ListAdapter, Na
 
 
 
-How I built an Android app: https://twitter.com/Celina_Kimm/status/1435634282987495431
+How I went from ZERO movile dev experience to building an Android app in 1.5 months: https://twitter.com/Celina_Kimm/status/1435634282987495431
