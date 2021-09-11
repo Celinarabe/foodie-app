@@ -86,11 +86,16 @@ class NewDishFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dishID = navigationArgs.dishId
-        binding.addPicBtn.setOnClickListener {
-            this@NewDishFragment.showPictureOptions()
-        }
-        binding.btnDate.setOnClickListener {
-            datePicker?.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
+        binding.apply {
+            addPicBtn.setOnClickListener {
+                this@NewDishFragment.showPictureOptions()
+            }
+            imageView.setOnClickListener {
+                this@NewDishFragment.showPictureOptions()
+            }
+            btnDate.setOnClickListener {
+                datePicker?.show(this@NewDishFragment.parentFragmentManager, datePicker.toString())
+            }
         }
         if (dishID == -1) NewDishBind() else {
             sharedViewModel.getDish(dishID).observe(this.viewLifecycleOwner) { selectedItem ->
@@ -159,9 +164,8 @@ class NewDishFragment : Fragment() {
         } else {
             // Set error text
             binding.etDishName.error = getString(R.string.dish_name_validation)
+            Toast.makeText(requireContext(), "Must enter a name", Toast.LENGTH_SHORT).show()
 
-//            // Clear error text
-//            passwordLayout.error = null
         }
     }
 
@@ -195,13 +199,14 @@ class NewDishFragment : Fragment() {
         try {
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
                 photoUri = Uri.fromFile(photoFile)
+                Glide.with(requireContext()).load(photoUri).into(binding.imageView)
             } else { //getting image from gallery
                 if (data !== null) {
                     photoUri = data?.data!!
+                    Glide.with(requireContext()).load(photoUri).into(binding.imageView)
                 }
             }
             Log.d("NewDishFragment", "newURI: $photoUri")
-            Glide.with(requireContext()).load(photoUri).into(binding.imageView)
         } catch (e: IOException) {
             Log.i("TAG", "Some exception $e")
         }
