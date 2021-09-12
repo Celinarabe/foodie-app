@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_new_dish">
         <action
             android:id="@+id/action_newDishFragment_to_listFeedFragment"
-            app:destination="@id/listFeedFragment" />
+            app:destination="@id/listFeedFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@android:anim/slide_in_left"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_newDishFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -32,13 +36,21 @@
         tools:layout="@layout/fragment_list_feed">
         <action
             android:id="@+id/action_listFeedFragment_to_newDishFragment"
-            app:destination="@id/newDishFragment" />
+            app:destination="@id/newDishFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_listFeedFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_listFeedFragment_to_dishDetailFragment"
-            app:destination="@id/dishDetailFragment" />
+            app:destination="@id/dishDetailFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -62,9 +74,17 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_dishDetailFragment_to_newDishFragment"
-            app:destination="@id/newDishFragment" />
+            app:destination="@id/newDishFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:exitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_dishDetailFragment_to_listFeedFragment"
-            app:destination="@id/listFeedFragment" />
+            app:destination="@id/listFeedFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 </navigation>
