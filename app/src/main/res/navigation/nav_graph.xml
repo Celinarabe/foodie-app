@@ -14,7 +14,7 @@
             android:id="@+id/action_newDishFragment_to_listFeedFragment"
             app:destination="@id/listFeedFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@android:anim/slide_in_left"
+            app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
