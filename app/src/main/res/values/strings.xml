@@ -33,4 +33,6 @@
     <string name="add_new_dish">New Dish</string>
 
     <string name="edit_dish">Edit</string>
+    <string name="smiley_text">  Get Started</string>
+    <string name="call_to_action_add">Add New Dish</string>
 </resources>

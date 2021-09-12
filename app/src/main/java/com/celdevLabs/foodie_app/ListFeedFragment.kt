@@ -60,13 +60,18 @@ class ListFeedFragment : Fragment() {
             )
             this.findNavController().navigate(action)
         }
+        binding.callBtn.setOnClickListener{
+            val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
+                getString(R.string.add_fragment_title)
+            )
+            this.findNavController().navigate(action)
+        }
     }
 
     private fun chooseLayout() {
         //create adapter
-        val adapter = DishListAdapter(isLinearLayoutManager, this.requireContext()) {
-            val action =
-                ListFeedFragmentDirections.actionListFeedFragmentToDishDetailFragment(it.idx)
+        val adapter = DishListAdapter(isLinearLayoutManager,this.requireContext()) {
+            val action = ListFeedFragmentDirections.actionListFeedFragmentToDishDetailFragment(it.idx)
             this.findNavController().navigate(action)
         }
 
@@ -74,23 +79,24 @@ class ListFeedFragment : Fragment() {
         if (isLinearLayoutManager) {
             binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         } else {
-            binding.recyclerView.layoutManager =
-                GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
+            binding.recyclerView.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
             Log.d("ListFeedFragment", "in the else")
         }
 
         //set adapter
         binding.recyclerView.adapter = adapter
-        viewModel.allDishes.observe(this.viewLifecycleOwner) { dishes ->
-            dishes.let {
-                adapter.submitList(it)
-                if (it.isEmpty()) {
-                    Log.d("ListFeedFragment", "HI NONE HERE")
-                    binding.callBtn.visibility = View.VISIBLE
-                }
+        viewModel.allDishes.observe(this.viewLifecycleOwner){
+                dishes -> dishes.let {
+            adapter.submitList(it)
+            if (it.isEmpty()) {
+                Log.d("ListFeedFragment", "HI NONE HERE")
+                binding.callBtn.visibility = View.VISIBLE
+            } else {
+                binding.callBtn.visibility = View.INVISIBLE
             }
-
         }
+        }
+
     }
 
     private fun setIcon(menuItem: MenuItem?) {
