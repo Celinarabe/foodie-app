@@ -31,7 +31,6 @@
         app:tint="@android:color/white" />
 
     <Button
-
         android:id="@+id/callBtn"
         style="@style/customFilledBtn"
         android:layout_width="wrap_content"

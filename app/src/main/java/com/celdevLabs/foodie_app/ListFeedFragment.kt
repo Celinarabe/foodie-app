@@ -80,23 +80,20 @@ class ListFeedFragment : Fragment() {
             binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         } else {
             binding.recyclerView.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
-            Log.d("ListFeedFragment", "in the else")
         }
 
         //set adapter
         binding.recyclerView.adapter = adapter
-        viewModel.allDishes.observe(this.viewLifecycleOwner){
-                dishes -> dishes.let {
-            adapter.submitList(it)
-            if (it.isEmpty()) {
-                Log.d("ListFeedFragment", "HI NONE HERE")
-                binding.callBtn.visibility = View.VISIBLE
-            } else {
-                binding.callBtn.visibility = View.INVISIBLE
+        viewModel.allDishes.observe(this.viewLifecycleOwner) { dishes ->
+            dishes.let {
+                adapter.submitList(it)
+                if (it.isEmpty()) {
+                    binding.callBtn.visibility = View.VISIBLE
+                } else {
+                    binding.callBtn.visibility = View.INVISIBLE
+                }
             }
         }
-        }
-
     }
 
     private fun setIcon(menuItem: MenuItem?) {
