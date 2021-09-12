@@ -15,18 +15,19 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         }
     }
 
-    private fun getNewDishObj(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String) : Dish{
+    private fun getNewDishObj(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String, rating: Double) : Dish{
         return Dish(
             name = newName,
             date = newDate,
             location = newLocation,
             notes = newNotes,
-            dishUri = newPhoto
+            dishUri = newPhoto,
+            rating = rating
         )
     }
 
-    fun addNewDish(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String){
-        val newDish = getNewDishObj(newName, newDate, newLocation, newNotes, newPhoto)
+    fun addNewDish(newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String, rating:Double){
+        val newDish = getNewDishObj(newName, newDate, newLocation, newNotes, newPhoto, rating)
         insertDish(newDish)
     }
 
@@ -36,20 +37,20 @@ class DishViewModel(private val dishDao: DishDAO): ViewModel() {
         return dishDao.getDish(id).asLiveData()
     }
 
-    fun updateDish(id: Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String) {
-        val updatedDish = getUpdatedItemEntry(id, newName, newDate, newLocation, newNotes, newPhoto)
+    fun updateDish(id: Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String, rating: Double) {
+        val updatedDish = getUpdatedItemEntry(id, newName, newDate, newLocation, newNotes, newPhoto, rating)
         updateDish(updatedDish)
     }
 
-    private fun getUpdatedItemEntry(id:Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String):Dish {
+    private fun getUpdatedItemEntry(id:Int, newName:String, newDate:Long, newLocation: String, newNotes: String, newPhoto: String, rating: Double):Dish {
         return Dish(
             idx = id,
             name = newName,
             date = newDate,
             location = newLocation,
             notes = newNotes,
-            dishUri = newPhoto
-
+            dishUri = newPhoto,
+            rating = rating
         )
     }
 
