@@ -60,6 +60,12 @@ class ListFeedFragment : Fragment() {
             )
             this.findNavController().navigate(action)
         }
+        binding.callBtn.setOnClickListener{
+            val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
+                getString(R.string.add_fragment_title)
+            )
+            this.findNavController().navigate(action)
+        }
     }
 
     private fun chooseLayout() {
@@ -74,15 +80,19 @@ class ListFeedFragment : Fragment() {
             binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         } else {
             binding.recyclerView.layoutManager = GridLayoutManager(this.context, 2, GridLayoutManager.VERTICAL, false)
-            Log.d("ListFeedFragment", "in the else")
         }
 
         //set adapter
         binding.recyclerView.adapter = adapter
-        viewModel.allDishes.observe(this.viewLifecycleOwner){
-                dishes -> dishes.let {
-            adapter.submitList(it)
-        }
+        viewModel.allDishes.observe(this.viewLifecycleOwner) { dishes ->
+            dishes.let {
+                adapter.submitList(it)
+                if (it.isEmpty()) {
+                    binding.callBtn.visibility = View.VISIBLE
+                } else {
+                    binding.callBtn.visibility = View.INVISIBLE
+                }
+            }
         }
     }
 

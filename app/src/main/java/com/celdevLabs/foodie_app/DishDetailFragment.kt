@@ -50,7 +50,7 @@ class DishDetailFragment : Fragment() {
             if (currDish.dishUri != "null") {
                 val uri = Uri.parse(currDish.dishUri)
                 Glide.with(requireContext()).load(uri).into(imgSelectedDish)
-                imgSelectedDish.scaleType = ImageView.ScaleType.FIT_XY
+                imgSelectedDish.scaleType = ImageView.ScaleType.FIT_CENTER
             } else {
                 imgSelectedDish.setImageResource(R.drawable.ic_baseline_fastfood_24)
             }

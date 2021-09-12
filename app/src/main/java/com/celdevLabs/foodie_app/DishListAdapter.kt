@@ -73,6 +73,8 @@ class DishListAdapter(private val isLinear: Boolean, private val context: Contex
 
 
 
+
+
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Dish>() {
             override fun areItemsTheSame(oldItem: Dish, newItem: Dish): Boolean {
