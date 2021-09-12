@@ -109,9 +109,7 @@
                 android:numStars="5"
                 android:rating="0"
                 android:scaleX="0.75"
-                android:scaleY="0.75"
-
-                />
+                android:scaleY="0.75" />
         </LinearLayout>
 
 

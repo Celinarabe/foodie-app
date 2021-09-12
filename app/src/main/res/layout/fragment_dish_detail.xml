@@ -49,6 +49,34 @@
         android:textSize="14sp"
         tools:text="08/24/2021" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="My Rating:"
+                android:textSize="16sp" />
+            <RatingBar
+                android:id="@+id/dishRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stepSize="0.5"
+                android:layout_gravity="center_horizontal"
+                android:numStars="5"
+                android:isIndicator="true"
+                android:rating="0"
+                android:scaleX="0.75"
+                android:scaleY="0.75" />
+        </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvDishNotes"
@@ -56,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginStart="16dp"
+
         tools:text="ahhhmazing place" />
     </LinearLayout>
 
@@ -64,10 +93,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+
+        >
 
     <Button
-
+        android:layout_marginStart="16dp"
         android:id="@+id/delete_dish"
         style="@style/customTextBtn"
 

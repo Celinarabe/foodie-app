@@ -47,6 +47,7 @@ class DishDetailFragment : Fragment() {
                 tvDishLocation.visibility = View.VISIBLE
             }
             tvDishNotes.text = dish.notes
+            dishRatingBar.rating = dish.rating.toFloat()
             if (currDish.dishUri != "null") {
                 val uri = Uri.parse(currDish.dishUri)
                 Glide.with(requireContext()).load(uri).into(imgSelectedDish)
