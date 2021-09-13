@@ -25,27 +25,24 @@
         android:layout_marginEnd="@dimen/margin_between_elements"
         android:layout_marginBottom="@dimen/margin_between_elements"
         android:contentDescription="@string/add_new_item"
-        app:srcCompat="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@android:color/white" />
 
-    <Button
-        android:id="@+id/callBtn"
-        style="@style/customFilledBtn"
+    <TextView
+        android:id="@+id/tvAddDish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/call_to_action_add"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:padding="16dp"
+        android:text="Looks like you don't have any dishes...yet! \nClick the + to get started."
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-
-        />
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
