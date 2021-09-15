@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import com.celdevLabs.foodie_app.databinding.FragmentListFeedBinding
 import com.celdevLabs.foodie_app.utilities.Constants
 import com.celdevLabs.foodie_app.view_models.DishViewModel
 import com.celdevLabs.foodie_app.view_models.DishViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class ListFeedFragment : Fragment() {
@@ -28,6 +30,7 @@ class ListFeedFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
 
     private var isLinearLayoutManager = true
+    private var isFirstTime = true
 
     private val viewModel: DishViewModel by activityViewModels {
         DishViewModelFactory(
@@ -54,13 +57,11 @@ class ListFeedFragment : Fragment() {
         sharedPref = activity?.getSharedPreferences(Constants.SharedPreferencesKey, Context.MODE_PRIVATE)!!
         isLinearLayoutManager = sharedPref.getBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager) //true is default
         chooseLayout()
-        binding.floatingActionButton.setOnClickListener {
-            val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
-                getString(R.string.add_fragment_title)
-            )
-            this.findNavController().navigate(action)
+        isFirstTime = sharedPref.getBoolean(Constants.FirstTimeStartKey, isFirstTime) //true is default
+        if (isFirstTime) {
+            showIntroDialog()
         }
-        binding.callBtn.setOnClickListener{
+        binding.floatingActionButton.setOnClickListener {
             val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
                 getString(R.string.add_fragment_title)
             )
@@ -88,14 +89,32 @@ class ListFeedFragment : Fragment() {
             dishes.let {
                 adapter.submitList(it)
                 if (it.isEmpty()) {
-                    binding.callBtn.visibility = View.VISIBLE
+                    binding.tvAddDish.visibility = View.VISIBLE
+
+
+
                 } else {
-                    binding.callBtn.visibility = View.INVISIBLE
+                    binding.tvAddDish.visibility = View.INVISIBLE
                 }
             }
         }
     }
 
+    private fun showIntroDialog() {
+        val customAlertDialogView: View = LayoutInflater.from(this.context).inflate(R.layout.get_started_custom_dialog, null, false)
+        context?.let {
+            val dialog = MaterialAlertDialogBuilder(it)
+                .setView(customAlertDialogView)
+                .setTitle(resources.getString(R.string.welcome))
+                .setCancelable(false)
+                .show()
+            val getStartedBtn = customAlertDialogView.findViewById<Button>(R.id.btnGetStarted)
+            getStartedBtn.setOnClickListener{
+                dialog.dismiss()
+            }
+
+        }
+    }
     private fun setIcon(menuItem: MenuItem?) {
         if (menuItem == null)
             return
@@ -131,6 +150,7 @@ class ListFeedFragment : Fragment() {
         super.onPause()
         val editor = sharedPref.edit()
         editor.putBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager )
+        editor.putBoolean(Constants.FirstTimeStartKey, false) //set first time to false
         editor.commit() //apply applies changes async compared to commit()
     }
 }

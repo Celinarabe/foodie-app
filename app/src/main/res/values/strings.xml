@@ -33,6 +33,8 @@
     <string name="add_new_dish">New Dish</string>
 
     <string name="edit_dish">Edit</string>
-    <string name="smiley_text">  Get Started</string>
+    <string name="get_started"><b>Get Started</b></string>
     <string name="call_to_action_add">Add New Dish</string>
+    <string name="welcome">Welcome to Foodie</string>
+    <string name="promo_details">Capture and share your foodie adventures effortlessly. No accounts or lengthy setup needed.</string>
 </resources>
