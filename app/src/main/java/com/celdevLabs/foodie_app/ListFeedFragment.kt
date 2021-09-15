@@ -30,6 +30,7 @@ class ListFeedFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
 
     private var isLinearLayoutManager = true
+    private var isFirstTime = true
 
     private val viewModel: DishViewModel by activityViewModels {
         DishViewModelFactory(
@@ -56,6 +57,10 @@ class ListFeedFragment : Fragment() {
         sharedPref = activity?.getSharedPreferences(Constants.SharedPreferencesKey, Context.MODE_PRIVATE)!!
         isLinearLayoutManager = sharedPref.getBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager) //true is default
         chooseLayout()
+        isFirstTime = sharedPref.getBoolean(Constants.FirstTimeStartKey, isFirstTime) //true is default
+        if (isFirstTime) {
+            showIntroDialog()
+        }
         binding.floatingActionButton.setOnClickListener {
             val action = ListFeedFragmentDirections.actionListFeedFragmentToNewDishFragment(
                 getString(R.string.add_fragment_title)
@@ -86,7 +91,7 @@ class ListFeedFragment : Fragment() {
                 if (it.isEmpty()) {
                     binding.tvAddDish.visibility = View.VISIBLE
 
-                    showIntroDialog()
+
 
                 } else {
                     binding.tvAddDish.visibility = View.INVISIBLE
@@ -145,6 +150,7 @@ class ListFeedFragment : Fragment() {
         super.onPause()
         val editor = sharedPref.edit()
         editor.putBoolean(Constants.CurrentLayoutManagerKey, isLinearLayoutManager )
+        editor.putBoolean(Constants.FirstTimeStartKey, false) //set first time to false
         editor.commit() //apply applies changes async compared to commit()
     }
 }
