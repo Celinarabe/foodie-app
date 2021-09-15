@@ -15,7 +15,8 @@ data class Dish (
     var date: Long,
     var location: String,
     var notes: String,
-    val dishUri: String
+    val dishUri: String,
+    val rating: Double
 )
 
 

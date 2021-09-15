@@ -115,12 +115,12 @@ class NewDishFragment : Fragment() {
 
     //bind view
     private fun EditDishBind(dish: Dish) {
-
         binding.apply {
             etDishName.setText(dish.name, TextView.BufferType.SPANNABLE)
             etLocation.setText(dish.location, TextView.BufferType.SPANNABLE)
             btnDate.text = TimeUtility.getDateTime(dish.date)
             etNotes.setText(dish.notes, TextView.BufferType.SPANNABLE)
+            dishRatingBar.rating = dish.rating.toFloat()
             if (currDish!!.dishUri != "null") {
                 val uri = Uri.parse(dish.dishUri)
                 Glide.with(requireContext()).load(uri).into(imageView)
@@ -128,7 +128,6 @@ class NewDishFragment : Fragment() {
             } else {
                 imageView.setImageResource(R.drawable.ic_baseline_fastfood_24)
             }
-
             btnSave.setOnClickListener { this@NewDishFragment.updateDish() }
         }
     }
@@ -137,12 +136,12 @@ class NewDishFragment : Fragment() {
     //TO DO: consolidate save/update dish
     private fun updateDish() {
         val newName: String = binding.etDishName.text.toString()
-        Log.d("NewDishFragment", "new name: ${newName}")
         val newDate: Long = selectedDate
         val location: String = binding.etLocation.text.toString()
         val notes: String = binding.etNotes.text.toString()
+        val rating: Double = binding.dishRatingBar.rating.toDouble()
         if (sharedViewModel.isEntryValid(newName)) {
-            sharedViewModel.updateDish(currDish!!.idx,newName, newDate, location, notes, photoUri.toString())
+            sharedViewModel.updateDish(currDish!!.idx,newName, newDate, location, notes, photoUri.toString(), rating)
             Toast.makeText(requireContext(), "Successfully Updated", Toast.LENGTH_SHORT).show()
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
@@ -157,8 +156,9 @@ class NewDishFragment : Fragment() {
         val newDate: Long = selectedDate
         val location: String = binding.etLocation.text.toString()
         val notes: String = binding.etNotes.text.toString()
+        val rating: Double = binding.dishRatingBar.rating.toDouble()
         if (sharedViewModel.isEntryValid(newName)) {
-            sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString())
+            sharedViewModel.addNewDish(newName, newDate, location, notes, photoUri.toString(), rating)
             val action = NewDishFragmentDirections.actionNewDishFragmentToListFeedFragment()
             findNavController().navigate(action)
         } else {
