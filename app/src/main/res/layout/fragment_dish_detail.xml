@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".DishDetailFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -14,78 +13,118 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
-        android:contentDescription="@string/dish_description"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/dish_description"
         android:scaleType="centerInside" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/tvDishName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:paddingTop="32dp"
-        android:textSize="20sp"
-        tools:text="Spaghetti" />
-
-    <TextView
-        android:id="@+id/tvDishLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        tools:text="Olive Garden" />
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textSize="14sp"
-        tools:text="08/24/2021" />
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/tvDishName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+
+                android:textSize="20sp"
+                tools:text="Spaghetti" />
+
+            <TextView
+                android:id="@+id/tvNotRated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Not yet rated"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+            <RatingBar
+                android:id="@+id/dishRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="0.5"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDishLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:visibility="gone"
+            tools:text="Olive Garden" />
 
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="My Rating:"
-                android:textSize="16sp" />
-            <RatingBar
-                android:id="@+id/dishRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:stepSize="0.5"
-                android:layout_gravity="center_horizontal"
-                android:numStars="5"
-                android:isIndicator="true"
-                android:rating="0"
-                android:scaleX="0.75"
-                android:scaleY="0.75" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="14sp"
+            tools:text="08/24/2021" />
 
 
-    <TextView
-        android:id="@+id/tvDishNotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="16dp"
 
-        tools:text="ahhhmazing place" />
+
+
+
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ratingLayout1"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="16dp"-->
+
+        <!--            android:orientation="horizontal"-->
+        <!--            android:gravity="center">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView1"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="My Rating:"-->
+        <!--                android:textSize="16sp" />-->
+        <!--            <RatingBar-->
+        <!--                android:id="@+id/dishRatingBar1"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:stepSize="0.5"-->
+        <!--                android:layout_gravity="center_horizontal"-->
+        <!--                android:numStars="5"-->
+        <!--                android:isIndicator="true"-->
+        <!--                style="@style/foodRatingBar"-->
+        <!--       />-->
+        <!--        </LinearLayout>-->
+
+
+        <TextView
+            android:id="@+id/tvDishNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+
+            tools:text="ahhhmazing place" />
     </LinearLayout>
 
 
@@ -96,38 +135,36 @@
 
         >
 
-    <Button
-        android:layout_marginStart="16dp"
-        android:id="@+id/delete_dish"
-        style="@style/customTextBtn"
+        <Button
+            android:id="@+id/delete_dish"
+            style="@style/customTextBtn"
+            android:layout_width="wrap_content"
 
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginEnd="@dimen/margin_between_elements"
-        android:layout_marginBottom="@dimen/margin_between_elements"
-        android:contentDescription="@string/edit_item"
-        app:icon="@drawable/ic_baseline_delete_24"
-        android:text="Delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-         />
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:contentDescription="@string/edit_item"
+            android:text="Delete"
+            app:icon="@drawable/ic_baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/fabEditDish"
-        style="@style/customOutlineBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginEnd="@dimen/margin_between_elements"
-        android:layout_marginBottom="@dimen/margin_between_elements"
-        android:contentDescription="@string/edit_item"
-        app:icon="@drawable/ic_baseline_edit_24"
-        android:text="@string/edit_dish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <Button
+            android:id="@+id/fabEditDish"
+            style="@style/customOutlineBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:layout_marginBottom="@dimen/margin_between_elements"
+            android:contentDescription="@string/edit_item"
+            android:text="@string/edit_dish"
+            app:icon="@drawable/ic_baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </LinearLayout>
 
 

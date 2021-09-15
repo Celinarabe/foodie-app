@@ -55,6 +55,10 @@ class DishDetailFragment : Fragment() {
             } else {
                 imgSelectedDish.setImageResource(R.drawable.ic_baseline_fastfood_24)
             }
+            if (currDish.rating > 0) {
+                binding.dishRatingBar.visibility = View.VISIBLE
+                binding.tvNotRated.visibility = View.GONE
+            }
             
             deleteDish.setOnClickListener {
                 showConfirmationDialog()
